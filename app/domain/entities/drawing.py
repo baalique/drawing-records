@@ -18,15 +18,19 @@ class Drawing(BaseModel):
         orm_mode = True
 
 
-class DrawingCreate(Drawing):
-    pass
+class DrawingCreate(BaseModel):
+    name: str
+    parent: Optional[Drawing]
+    category: str
+    project: str
+    drawing_data: dict
+    path_to_file: FilePath
 
-    class Config:
-        pass
 
-
-class DrawingUpdate(Drawing):
-    pass
-
-    class Config:
-        pass
+class DrawingUpdate(BaseModel):
+    name: Optional[str]
+    parent: Optional[Drawing]
+    category: Optional[str]
+    project: Optional[str]
+    drawing_data: Optional[dict]
+    path_to_file: Optional[FilePath]
