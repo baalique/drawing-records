@@ -22,7 +22,7 @@ class Drawing(BaseModel):
 
 class DrawingCreate(BaseModel):
     name: str
-    parent: Optional[Drawing]
+    parent_id: Optional[int]
     category: str
     project: str
     drawing_data: dict
@@ -31,7 +31,7 @@ class DrawingCreate(BaseModel):
 
 class DrawingUpdate(BaseModel):
     name: Optional[str]
-    parent: Optional[Drawing]
+    parent_id: Optional[int]
     category: Optional[str]
     project: Optional[str]
     drawing_data: Optional[dict]
