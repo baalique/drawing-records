@@ -1,8 +1,9 @@
 from __future__ import annotations
 
+from pathlib import Path
 from typing import Optional
 
-from pydantic import BaseModel, FilePath
+from pydantic import BaseModel
 
 
 class Drawing(BaseModel):
@@ -12,10 +13,11 @@ class Drawing(BaseModel):
     category: str
     project: str
     drawing_data: dict
-    path_to_file: FilePath
+    path_to_file: Path
 
     class Config:
         orm_mode = True
+        validate_assignment = True
 
 
 class DrawingCreate(BaseModel):
@@ -24,7 +26,7 @@ class DrawingCreate(BaseModel):
     category: str
     project: str
     drawing_data: dict
-    path_to_file: FilePath
+    path_to_file: Path
 
 
 class DrawingUpdate(BaseModel):
@@ -33,4 +35,4 @@ class DrawingUpdate(BaseModel):
     category: Optional[str]
     project: Optional[str]
     drawing_data: Optional[dict]
-    path_to_file: Optional[FilePath]
+    path_to_file: Optional[Path]
