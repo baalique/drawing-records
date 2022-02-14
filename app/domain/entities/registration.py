@@ -8,15 +8,13 @@ from app.domain.entities.drawing import Drawing
 class Registration(BaseModel):
     id: int
     drawing: Drawing
-    dt: datetime
+    created_at: datetime
 
     class Config:
         orm_mode = True
+        validate_assignment = True
 
 
 class RegistrationCreate(BaseModel):
-    drawing: Drawing
-    dt: datetime
-
-    class Config:
-        pass
+    drawing_id: int
+    created_at: datetime
