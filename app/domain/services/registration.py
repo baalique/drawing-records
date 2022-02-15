@@ -1,16 +1,14 @@
-from datetime import datetime
 from typing import Callable, Iterable
 
-from app.domain.entities.drawing import Drawing
-from app.domain.entities.registration import Registration
+from app.domain.entities.registration import Registration, RegistrationCreate
 
 
-def create_registration(create_one: Callable[[Drawing, datetime], Registration],
-                        drawing: Drawing, dt: datetime) -> Registration:
-    return create_one(drawing, dt)
+def create_registration(create_one: Callable[[RegistrationCreate], Registration],
+                        dto: RegistrationCreate) -> Registration:
+    return create_one(dto)
 
 
-def get_registration(get_one: Callable[[int], Registration], id: int) -> Registration:
+def get_registration_by_id(get_one: Callable[[int], Registration], id: int) -> Registration:
     return get_one(id)
 
 
