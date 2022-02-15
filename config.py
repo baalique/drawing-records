@@ -1,3 +1,6 @@
+from typing import Callable
+
+from dotenv import load_dotenv
 from pydantic import BaseSettings, Field
 
 
@@ -23,5 +26,15 @@ class Settings(BaseSettings):
         env_file_encoding = "utf-8"
 
 
-def get_app_settings() -> Settings:
+def _get_initial_app_settings() -> Callable[[], Settings]:
+    load_dotenv()
+    settings = Settings()
+
+    return lambda: settings
+
+
+get_initial_app_settings = _get_initial_app_settings()
+
+
+def get_current_app_settings() -> Settings:
     return Settings()
