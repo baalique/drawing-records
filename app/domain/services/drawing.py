@@ -1,24 +1,24 @@
-from typing import Callable, Optional, Iterable
+from typing import Callable, Optional, Iterable, Awaitable
 
 from app.domain.entities.drawing import DrawingCreate, Drawing, DrawingUpdate
 
 
-def create_drawing(create_one: Callable[[DrawingCreate], Drawing], dto: DrawingCreate) -> Drawing:
-    return create_one(dto)
+async def create_drawing(create_one: Callable[[DrawingCreate], Awaitable[Drawing]], dto: DrawingCreate) -> Drawing:
+    return await create_one(dto)
 
 
-def get_drawing_by_id(get_one: Callable[[int], Drawing], id: int) -> Drawing:
-    return get_one(id)
+async def get_drawing_by_id(get_one: Callable[[int], Awaitable[Drawing]], id: int) -> Drawing:
+    return await get_one(id)
 
 
-def get_all_drawings(get_all: Callable[[], Iterable[Drawing]]) -> Iterable[Drawing]:
-    return get_all()
+async def get_all_drawings(get_all: Callable[[], Awaitable[Iterable[Drawing]]]) -> Iterable[Drawing]:
+    return await get_all()
 
 
-def update_drawing(update_one: Callable[[DrawingUpdate, int], Optional[Drawing]], dto: DrawingUpdate, id: int) \
-        -> Optional[Drawing]:
-    return update_one(dto, id)
+async def update_drawing(update_one: Callable[[DrawingUpdate, int], Awaitable[Optional[Drawing]]],
+                         dto: DrawingUpdate, id: int) -> Optional[Drawing]:
+    return await update_one(dto, id)
 
 
-def delete_drawing(delete_one: Callable[[int], bool], id: int) -> bool:
-    return delete_one(id)
+async def delete_drawing(delete_one: Callable[[int], Awaitable[bool]], id: int) -> bool:
+    return await delete_one(id)
