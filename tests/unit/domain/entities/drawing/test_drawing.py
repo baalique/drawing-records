@@ -1,38 +1,9 @@
 from copy import deepcopy
-from typing import Dict, Any
 
 import pytest
 from pydantic import ValidationError
 
 from app.domain.entities.drawing import Drawing
-
-
-@pytest.fixture(name="valid_drawing_dict")
-def valid_drawing_dict_fixture() -> Dict[str, Any]:
-    return {
-        "id": 1,
-        "name": "test drawing",
-        "parent": None,
-        "category": "test category",
-        "project": "test project",
-        "drawing_data": {
-            "test_data": "test data"
-        },
-        "path_to_file": "/home/test/test.some"
-    }
-
-
-@pytest.fixture(name="invalid_drawing_dict")
-def invalid_drawing_dict_fixture() -> Dict[str, Any]:
-    return {
-        "id": "test id",
-        "name": [1],
-        "parent": 1,
-        "category": [1],
-        "project": [1],
-        "drawing_data": 1,
-        "path_to_file": 1
-    }
 
 
 @pytest.mark.unit
