@@ -1,7 +1,7 @@
-from pydantic import BaseModel
+from domain.entities import AbstractEntity
 
 
-class Status(BaseModel):
+class Status(AbstractEntity):
     title: str
     description: str
     version: str

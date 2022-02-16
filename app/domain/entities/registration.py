@@ -1,11 +1,10 @@
 from datetime import datetime
 
-from pydantic import BaseModel
-
 from app.domain.entities.drawing import Drawing
+from domain.entities import AbstractEntity
 
 
-class Registration(BaseModel):
+class Registration(AbstractEntity):
     id: int
     drawing: Drawing
     created_at: datetime
@@ -15,6 +14,6 @@ class Registration(BaseModel):
         validate_assignment = True
 
 
-class RegistrationCreate(BaseModel):
+class RegistrationCreate(AbstractEntity):
     drawing_id: int
     created_at: datetime

@@ -3,10 +3,10 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Optional
 
-from pydantic import BaseModel
+from domain.entities import AbstractEntity
 
 
-class Drawing(BaseModel):
+class Drawing(AbstractEntity):
     id: int
     name: str
     parent: Optional[Drawing]
@@ -20,7 +20,7 @@ class Drawing(BaseModel):
         validate_assignment = True
 
 
-class DrawingCreate(BaseModel):
+class DrawingCreate(AbstractEntity):
     name: str
     parent_id: Optional[int]
     category: str
@@ -29,7 +29,7 @@ class DrawingCreate(BaseModel):
     path_to_file: Path
 
 
-class DrawingUpdate(BaseModel):
+class DrawingUpdate(AbstractEntity):
     name: Optional[str]
     parent_id: Optional[int]
     category: Optional[str]
