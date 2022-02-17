@@ -3,7 +3,8 @@ from typing import List, Iterable, Optional
 from fastapi import APIRouter, Depends, Response, status, HTTPException
 
 from adapters.repository import AbstractRepository
-from adapters.repository.fake.drawing import FakeDrawingRepository, FakeSession
+from adapters.repository.fake import FakeSession
+from adapters.repository.fake.drawing import FakeDrawingRepository
 from app.domain.services import drawing as drawing_services
 from domain.entities.drawing import Drawing, DrawingCreate, DrawingUpdate
 
