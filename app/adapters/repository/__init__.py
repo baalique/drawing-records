@@ -25,6 +25,10 @@ class AbstractSession(abc.ABC):
     async def delete(self, *args, **kwargs) -> bool:
         raise NotImplementedError
 
+    @abc.abstractmethod
+    async def clear(self) -> None:
+        raise NotImplementedError
+
 
 class AbstractRepository(abc.ABC):
     def __init__(self, session: AbstractSession):
@@ -47,3 +51,17 @@ class AbstractRepository(abc.ABC):
 
     async def delete(self, *args, **kwargs) -> bool:
         pass
+
+    @abc.abstractmethod
+    async def clear(self) -> None:
+        raise NotImplementedError
+
+
+class AbstractMetadata(abc.ABC):
+    pass
+
+
+class AbstractDatabase(abc.ABC):
+    @abc.abstractmethod
+    async def truncate_database(self) -> None:
+        raise NotImplementedError
