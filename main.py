@@ -1,21 +1,14 @@
 import uvicorn
-from fastapi import FastAPI
 
-import api
-from config import get_initial_app_settings
+from config import get_initial_app_settings, get_current_app_settings
+from initialization import init_app
 
-settings = get_initial_app_settings()
+app_settings = get_initial_app_settings()
+app = init_app(app_settings)
 
-app = FastAPI(
-    title=settings.PROJECT_TITLE,
-    description=settings.PROJECT_DESCRIPTION,
-    version=settings.PROJECT_VERSION,
-    debug=settings.DEBUG
-)
 
-app.include_router(api.router)
-
-if __name__ == "__main__":
+def start_app() -> None:
+    settings = get_current_app_settings()
     uvicorn.run(
         "main:app",
         host=settings.HOST_URL,
@@ -23,3 +16,7 @@ if __name__ == "__main__":
         reload=settings.RELOAD,
         log_level=settings.LOG_LEVEL
     )
+
+
+if __name__ == "__main__":
+    start_app()
