@@ -9,6 +9,8 @@ class Settings(BaseSettings):
     PROJECT_DESCRIPTION: str = Field(env="PROJECT_DESCRIPTION")
     PROJECT_VERSION: str = Field(env="PROJECT_VERSION")
 
+    API_PREFIX: str = Field(env="API_PREFIX")
+
     DEBUG: bool = Field(env="DEBUG")
     LOG_LEVEL: str = Field(env="LOG_LEVEL")
     RELOAD: bool = Field(env="RELOAD")
