@@ -49,13 +49,11 @@ class FakeSession(AbstractSession):
         if not self._has_model(model):
             raise InvalidEntityException(f"Cannot delete entities with type {model}")
 
-        result = False
+        start_len = len(self.data[model])
 
-        for entity in self.data[model]:
-            if predicate(entity):
-                self.data[model].remove(entity)
-                result = True
-        return result
+        self.data[model] = list(filter(lambda e: not predicate(e), self.data[model]))
+
+        return start_len != len(self.data[model])
 
     async def clear(self) -> None:
         self.data = {type_: [] for type_ in self.data}
