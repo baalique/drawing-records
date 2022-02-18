@@ -1,6 +1,7 @@
 import pytest
 
-from adapters.repository.fake.drawing import FakeSession, FakeDrawingRepository
+from adapters.repository.fake import FakeSession
+from adapters.repository.fake.drawing import FakeDrawingRepository
 
 
 @pytest.fixture(name="drawing_repository_empty")

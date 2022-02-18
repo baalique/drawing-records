@@ -126,3 +126,11 @@ class TestFakeDrawingRepository:
     @pytest.mark.unit
     def test_call_drawing_repository_returns_itself(self, drawing_repository: FakeDrawingRepository):
         assert drawing_repository == drawing_repository()
+
+    @pytest.mark.unit
+    @pytest.mark.asyncio
+    async def test_truncate_database(self, drawing_repository: FakeDrawingRepository):
+        await drawing_repository.clear()
+        drawings = await drawing_repository.list()
+
+        assert drawings == []
