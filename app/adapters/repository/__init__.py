@@ -14,7 +14,7 @@ class AbstractSession(abc.ABC):
         raise NotImplementedError
 
     @abc.abstractmethod
-    async def list(self) -> List[AbstractEntity]:
+    async def list(self, *args, **kwargs) -> List[AbstractEntity]:
         raise NotImplementedError
 
     @abc.abstractmethod
@@ -31,9 +31,6 @@ class AbstractSession(abc.ABC):
 
 
 class AbstractRepository(abc.ABC):
-    def __init__(self, session: AbstractSession):
-        self.session = session
-
     @abc.abstractmethod
     async def add(self, entity: AbstractEntity) -> AbstractEntity:
         raise NotImplementedError
@@ -43,7 +40,7 @@ class AbstractRepository(abc.ABC):
         raise NotImplementedError
 
     @abc.abstractmethod
-    async def list(self) -> List[AbstractEntity]:
+    async def list(self, *args, **kwargs) -> List[AbstractEntity]:
         raise NotImplementedError
 
     async def update(self, *args, **kwargs) -> Optional[AbstractEntity]:

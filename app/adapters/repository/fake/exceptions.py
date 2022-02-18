@@ -1,0 +1,2 @@
+class InvalidEntityException(Exception):
+    pass
