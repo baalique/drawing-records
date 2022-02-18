@@ -1,20 +1,17 @@
 import pytest
 
-from adapters.repository.fake import FakeSession
 from adapters.repository.fake.drawing import FakeDrawingRepository
+from db import get_db
 
 
 @pytest.fixture(name="drawing_repository_empty")
 def drawing_repository_empty_fixture() -> FakeDrawingRepository:
-    session = FakeSession()
-    repository = FakeDrawingRepository(session)
-    return repository
+    return get_db().repositories["Drawing"]
 
 
 @pytest.fixture(name="drawing_repository")
 async def drawing_repository_fixture(create_many_drawing_dto) -> FakeDrawingRepository:
-    session = FakeSession()
-    repository = FakeDrawingRepository(session)
+    repository = get_db().repositories["Drawing"]
     for drawing in create_many_drawing_dto():
         await repository.add(drawing)
     return repository
