@@ -54,6 +54,21 @@ class TestDrawingAPI:
             assert data == []
 
     @pytest.mark.e2e
+    def test_get_all(self, test_client, create_many_drawing_dto):
+        drawings = create_many_drawing_dto()
+        with test_client:
+            for dto in drawings:
+                test_client.post(
+                    "drawing/new",
+                    json=jsonable_encoder(dto)
+                )
+            response = test_client.get("drawing/all")
+            data = response.json()
+
+            assert response.status_code == status.HTTP_200_OK
+            assert len(data) == len(drawings)
+
+    @pytest.mark.e2e
     def test_update_success(self, test_client, create_drawing_dto, update_drawing_dto):
         with test_client:
             create_response = test_client.post(
