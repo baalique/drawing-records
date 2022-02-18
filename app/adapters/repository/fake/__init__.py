@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import abc
 from typing import Callable, Optional, List, Dict
 
 from adapters.repository import AbstractSession, AbstractDatabase, AbstractMetadata, AbstractRepository
@@ -54,3 +55,29 @@ class FakeDatabase(AbstractDatabase):
     async def truncate_database(self) -> None:
         for repository in self.repositories.values():
             await repository.clear()
+
+
+class FakeBaseRepository(AbstractRepository, abc.ABC):
+    def __init__(self, session: AbstractSession):
+        super().__init__(session)
+        self._pk_count = 1
+
+    def __call__(self) -> FakeBaseRepository:
+        return self
+
+    @abc.abstractmethod
+    async def add(self, entity: AbstractEntity) -> AbstractEntity:
+        raise NotImplementedError
+
+    async def get(self, id: int, *args, **kwargs) -> Optional[AbstractEntity]:
+        return await self.session.get(lambda d: d.id == id)
+
+    async def list(self) -> List[AbstractEntity]:
+        return await self.session.list()
+
+    async def clear(self) -> None:
+        self._reload_pk()
+        await self.session.clear()
+
+    def _reload_pk(self) -> None:
+        self._pk_count = 1

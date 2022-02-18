@@ -3,6 +3,7 @@ from copy import deepcopy
 import pytest
 
 from adapters.repository import AbstractSession, AbstractRepository
+from adapters.repository.fake import FakeSession
 
 
 class TestAbstractSession:
@@ -25,7 +26,7 @@ class TestAbstractRepository:
     @pytest.mark.unit
     def test_cannot_create_instance(self):
         with pytest.raises(TypeError):
-            AbstractRepository()
+            assert AbstractRepository(FakeSession())
 
     @pytest.mark.unit
     def test_cannot_create_subclass_without_required_methods(self, class_inherited_from_abstract_session):
