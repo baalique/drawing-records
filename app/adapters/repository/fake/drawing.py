@@ -20,7 +20,8 @@ class FakeDrawingRepository(FakeBaseRepository):
         return await self.session.add(drawing)
 
     async def get(self, id: int) -> Optional[Drawing]:
-        return await self.session.get("Drawing", lambda d: d.id == id)
+        drawings = await self.session.get("Drawing", lambda d: d.id == id)
+        return drawings[0] if drawings else None
 
     async def list(self) -> List[Drawing]:
         return await self.session.list("Drawing")

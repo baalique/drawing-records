@@ -22,12 +22,11 @@ class FakeSession(AbstractSession):
         self.data[type_.__name__].append(entity)
         return entity
 
-    async def get(self, model: str, predicate: Callable[[AbstractEntity], bool]) -> Optional[AbstractEntity]:
+    async def get(self, model: str, predicate: Callable[[AbstractEntity], bool]) -> List[AbstractEntity]:
         if not self._has_model(model):
             raise InvalidEntityException(f"Cannot get entity with type {model}")
-        for entity in self.data[model]:
-            if predicate(entity):
-                return entity
+
+        return list(filter(predicate, self.data[model]))
 
     async def list(self, model: str) -> List[AbstractEntity]:
         if not self._has_model(model):

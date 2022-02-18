@@ -23,7 +23,8 @@ class FakeRegistrationRepository(FakeBaseRepository):
         return await self.session.add(registration)
 
     async def get(self, id: int) -> Optional[AbstractEntity]:
-        return await self.session.get("Registration", lambda d: d.id == id)
+        registrations = await self.session.get("Registration", lambda d: d.id == id)
+        return registrations[0] if registrations else None
 
     async def list(self) -> List[AbstractEntity]:
         return await self.session.list("Registration")
