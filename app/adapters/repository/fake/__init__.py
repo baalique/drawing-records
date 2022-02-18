@@ -4,7 +4,7 @@ import abc
 from typing import Callable, Optional, List, Dict
 
 from adapters.repository import AbstractSession, AbstractDatabase, AbstractMetadata, AbstractRepository
-from adapters.repository.fake.exceptions import InvalidEntityException
+from adapters.exceptions.exceptions import InvalidEntityException
 from domain.entities import AbstractEntity
 
 
