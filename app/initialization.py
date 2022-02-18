@@ -1,23 +1,14 @@
 from fastapi import FastAPI
 
 import api
-from adapters.repository import AbstractDatabase, AbstractMetadata
-from adapters.repository.fake import FakeDatabase, FakeMetadata
-from api.drawing import drawing_repo
+from adapters.repository import AbstractDatabase
 from application import Application
 from config import Settings
-
-
-def get_metadata(settings: Settings) -> AbstractMetadata:
-    return FakeMetadata()
+from db import app_db
 
 
 def init_database(settings: Settings) -> AbstractDatabase:
-    metadata = get_metadata(settings)
-    repositories = {
-        "drawing": drawing_repo
-    }
-    return FakeDatabase(metadata, repositories)
+    return app_db
 
 
 def init_app(settings: Settings) -> Application:

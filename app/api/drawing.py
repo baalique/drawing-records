@@ -3,15 +3,13 @@ from typing import List, Iterable, Optional
 from fastapi import APIRouter, Depends, Response, status, HTTPException
 
 from adapters.repository import AbstractRepository
-from adapters.repository.fake import FakeSession
-from adapters.repository.fake.drawing import FakeDrawingRepository
 from app.domain.services import drawing as drawing_services
+from db import app_db
 from domain.entities.drawing import Drawing, DrawingCreate, DrawingUpdate
 
 router = APIRouter(prefix="/drawing", tags=["drawing"])
 
-session = FakeSession()
-drawing_repo = FakeDrawingRepository(session)
+drawing_repo = app_db.repositories["Drawing"]
 
 
 @router.post(

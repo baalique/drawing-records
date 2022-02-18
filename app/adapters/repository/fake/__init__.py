@@ -3,8 +3,8 @@ from __future__ import annotations
 import abc
 from typing import Callable, Optional, List, Dict
 
-from adapters.repository import AbstractSession, AbstractDatabase, AbstractMetadata, AbstractRepository
 from adapters.exceptions.exceptions import InvalidEntityException
+from adapters.repository import AbstractSession, AbstractDatabase, AbstractMetadata, AbstractRepository
 from domain.entities import AbstractEntity
 
 
@@ -63,6 +63,9 @@ class FakeSession(AbstractSession):
     def _has_model(self, model: str) -> bool:
         return model in self.data
 
+    def close(self):
+        pass
+
 
 class FakeMetadata(AbstractMetadata):
     pass
@@ -76,6 +79,9 @@ class FakeDatabase(AbstractDatabase):
     async def truncate_database(self) -> None:
         for repository in self.repositories.values():
             await repository.clear()
+
+    def close(self) -> None:
+        pass
 
 
 class FakeBaseRepository(AbstractRepository, abc.ABC):
