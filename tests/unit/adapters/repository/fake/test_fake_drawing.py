@@ -39,6 +39,12 @@ class TestFakeDrawingRepository:
 
     @pytest.mark.unit
     @pytest.mark.asyncio
+    async def test_add_one_drawing_fails_wrong_type(self, drawing_repository: FakeDrawingRepository):
+        with pytest.raises(AttributeError):
+            await drawing_repository.add("test data")
+
+    @pytest.mark.unit
+    @pytest.mark.asyncio
     async def test_get_one_drawing(self, drawing_repository: FakeDrawingRepository,
                                    create_drawing_dto: DrawingCreate):
         drawing = await drawing_repository.add(create_drawing_dto)
@@ -50,7 +56,7 @@ class TestFakeDrawingRepository:
 
     @pytest.mark.unit
     @pytest.mark.asyncio
-    async def test_get_one_drawing_fails(self, drawing_repository: FakeDrawingRepository):
+    async def test_get_one_drawing_fails_no_such_id(self, drawing_repository: FakeDrawingRepository):
         drawings = await drawing_repository.list()
         max_id = max(d.id for d in drawings)
 
@@ -87,14 +93,20 @@ class TestFakeDrawingRepository:
 
     @pytest.mark.unit
     @pytest.mark.asyncio
-    async def test_update_drawing_fails(self, drawing_repository: FakeDrawingRepository,
-                                        update_drawing_dto: DrawingUpdate):
+    async def test_update_drawing_fails_no_such_id(self, drawing_repository: FakeDrawingRepository,
+                                                   update_drawing_dto: DrawingUpdate):
         drawings = await drawing_repository.list()
         max_id = max(d.id for d in drawings)
 
         updated_drawing = await drawing_repository.update(update_drawing_dto, max_id + 1)
 
         assert updated_drawing is None
+
+    @pytest.mark.unit
+    @pytest.mark.asyncio
+    async def test_update_drawing_fails_wrong_type(self, drawing_repository: FakeDrawingRepository):
+        with pytest.raises(AttributeError):
+            await drawing_repository.update("test data", 1)
 
     @pytest.mark.unit
     @pytest.mark.asyncio
@@ -112,7 +124,7 @@ class TestFakeDrawingRepository:
 
     @pytest.mark.unit
     @pytest.mark.asyncio
-    async def test_delete_drawing_fails(self, drawing_repository: FakeDrawingRepository):
+    async def test_delete_drawing_fails_no_such_id(self, drawing_repository: FakeDrawingRepository):
         drawings = await drawing_repository.list()
         max_id = max(d.id for d in drawings)
         start_len = len(drawings)
