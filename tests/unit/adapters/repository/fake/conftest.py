@@ -20,11 +20,18 @@ def drawing_repository_empty_fixture() -> FakeDrawingRepository:
 
 
 @pytest.fixture(name="drawing_repository")
-async def drawing_repository_fixture(create_many_drawings_dto) -> FakeDrawingRepository:
-    repository = get_db().repositories["Drawing"]
-    for drawing in create_many_drawings_dto():
-        await repository.add(drawing)
-    return repository
+async def drawing_repository_fixture(drawings) -> Callable[[int], FakeDrawingRepository]:
+    def get_repository(amount=10):
+        all_drawings = drawings(amount)
+
+        drawing_repository = get_db().repositories["Drawing"]
+        drawing_repository.session.data["Drawing"] = all_drawings
+
+        drawing_repository._pk_count = max(d.id for d in all_drawings) + 1
+
+        return drawing_repository
+
+    return get_repository
 
 
 @pytest.fixture(name="registration_repository_empty")
