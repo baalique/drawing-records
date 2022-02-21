@@ -54,8 +54,8 @@ class TestDrawingAPI:
             assert data == []
 
     @pytest.mark.e2e
-    def test_get_all(self, test_client, create_many_drawing_dto):
-        drawings = create_many_drawing_dto()
+    def test_get_all(self, test_client, create_many_drawings_dto):
+        drawings = create_many_drawings_dto()
         with test_client:
             for dto in drawings:
                 test_client.post(

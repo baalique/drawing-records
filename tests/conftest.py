@@ -30,8 +30,8 @@ def create_drawing_dto_fixture(factory_drawing_create):
     return factory_drawing_create()
 
 
-@pytest.fixture(name="create_many_drawing_dto")
-def create_many_drawing_dto_fixture(factory_drawing_create):
+@pytest.fixture(name="create_many_drawings_dto")
+def create_many_drawings_dto_fixture(factory_drawing_create):
     return lambda amount=10: make_many(factory_drawing_create, amount)
 
 

@@ -67,10 +67,10 @@ class TestFakeDrawingRepository:
     @pytest.mark.unit
     @pytest.mark.asyncio
     async def test_get_all_drawings(self, drawing_repository_empty: FakeDrawingRepository,
-                                    create_many_drawing_dto: Callable[[int], List[DrawingCreate]]):
+                                    create_many_drawings_dto: Callable[[int], List[DrawingCreate]]):
         nb_of_drawings = 10
 
-        drawings = create_many_drawing_dto(nb_of_drawings)
+        drawings = create_many_drawings_dto(nb_of_drawings)
         for drawing in drawings:
             await drawing_repository_empty.add(drawing)
 

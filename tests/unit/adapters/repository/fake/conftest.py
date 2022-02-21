@@ -20,9 +20,9 @@ def drawing_repository_empty_fixture() -> FakeDrawingRepository:
 
 
 @pytest.fixture(name="drawing_repository")
-async def drawing_repository_fixture(create_many_drawing_dto) -> FakeDrawingRepository:
+async def drawing_repository_fixture(create_many_drawings_dto) -> FakeDrawingRepository:
     repository = get_db().repositories["Drawing"]
-    for drawing in create_many_drawing_dto():
+    for drawing in create_many_drawings_dto():
         await repository.add(drawing)
     return repository
 
