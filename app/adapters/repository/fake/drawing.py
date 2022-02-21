@@ -9,7 +9,7 @@ from domain.entities.drawing import Drawing, DrawingCreate, DrawingUpdate
 class FakeDrawingRepository(FakeBaseRepository):
     def __init__(self, session: FakeSession):
         super().__init__(session)
-        self.session.register_repository("Drawing")
+        self.session.register_repository("Drawing", self)
 
     async def add(self, drawing_create: DrawingCreate) -> Drawing:
         drawing = Drawing(

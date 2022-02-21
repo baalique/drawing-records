@@ -11,9 +11,11 @@ from domain.entities import AbstractEntity
 class FakeSession(AbstractSession):
     def __init__(self):
         self.data: Dict[str, List[AbstractEntity]] = {}
+        self._repositories: Dict[str, AbstractRepository] = {}
 
-    def register_repository(self, model: str):
+    def register_repository(self, model: str, repository: AbstractRepository):
         self.data[model] = []
+        self._repositories[model] = repository
 
     async def add(self, entity: AbstractEntity) -> AbstractEntity:
         type_ = type(entity)
