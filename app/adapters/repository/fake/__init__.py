@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import abc
+import pprint
 from typing import Callable, Optional, List, Dict
 
 from adapters.exceptions.exceptions import InvalidEntityException
@@ -81,6 +82,9 @@ class FakeDatabase(AbstractDatabase):
 
     def close(self) -> None:
         pass
+
+    def __repr__(self) -> str:
+        return pprint.pformat(self.repositories and list(self.repositories.values())[0].session.data)
 
 
 class FakeBaseRepository(AbstractRepository, abc.ABC):
