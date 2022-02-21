@@ -17,7 +17,7 @@ class TestFakeDrawingRepository:
     @pytest.mark.asyncio
     async def test_add_one_drawing(self, drawing_repository: Callable[[int], FakeDrawingRepository],
                                    create_drawing_dto: DrawingCreate):
-        drawing_repository = drawing_repository(10)
+        drawing_repository = drawing_repository()
         drawings = await drawing_repository.list()
         start_len = len(drawings)
 
@@ -30,7 +30,7 @@ class TestFakeDrawingRepository:
     @pytest.mark.asyncio
     async def test_add_one_drawing_increases_pk(self, drawing_repository: Callable[[int], FakeDrawingRepository],
                                                 create_drawing_dto: DrawingCreate):
-        drawing_repository = drawing_repository(10)
+        drawing_repository = drawing_repository()
         drawings = await drawing_repository.list()
 
         start_max_id = max(d.id for d in drawings)
@@ -49,7 +49,7 @@ class TestFakeDrawingRepository:
     @pytest.mark.asyncio
     async def test_get_one_drawing(self, drawing_repository: Callable[[int], FakeDrawingRepository],
                                    create_drawing_dto: DrawingCreate):
-        drawing_repository = drawing_repository(10)
+        drawing_repository = drawing_repository()
         drawing = await drawing_repository.add(create_drawing_dto)
         id_ = drawing.id
 
@@ -60,7 +60,7 @@ class TestFakeDrawingRepository:
     @pytest.mark.unit
     @pytest.mark.asyncio
     async def test_get_one_drawing_fails_no_such_id(self, drawing_repository: Callable[[int], FakeDrawingRepository]):
-        drawing_repository = drawing_repository(10)
+        drawing_repository = drawing_repository()
         drawings = await drawing_repository.list()
         max_id = max(d.id for d in drawings)
 
@@ -71,8 +71,9 @@ class TestFakeDrawingRepository:
     @pytest.mark.unit
     @pytest.mark.asyncio
     async def test_get_all_drawings(self, drawing_repository_empty: FakeDrawingRepository,
-                                    create_many_drawings_dto: Callable[[int], List[DrawingCreate]]):
-        nb_of_drawings = 10
+                                    create_many_drawings_dto: Callable[[int], List[DrawingCreate]],
+                                    default_database_size: int):
+        nb_of_drawings = default_database_size
 
         drawings = create_many_drawings_dto(nb_of_drawings)
         for drawing in drawings:
@@ -86,7 +87,7 @@ class TestFakeDrawingRepository:
     @pytest.mark.asyncio
     async def test_update_drawing(self, drawing_repository: Callable[[int], FakeDrawingRepository],
                                   update_drawing_dto: DrawingUpdate):
-        drawing_repository = drawing_repository(10)
+        drawing_repository = drawing_repository()
         drawings = await drawing_repository.list()
         id_ = drawings[0].id
 
@@ -100,7 +101,7 @@ class TestFakeDrawingRepository:
     @pytest.mark.asyncio
     async def test_update_drawing_fails_no_such_id(self, drawing_repository: Callable[[int], FakeDrawingRepository],
                                                    update_drawing_dto: DrawingUpdate):
-        drawing_repository = drawing_repository(10)
+        drawing_repository = drawing_repository()
         drawings = await drawing_repository.list()
         max_id = max(d.id for d in drawings)
 
@@ -111,7 +112,7 @@ class TestFakeDrawingRepository:
     @pytest.mark.unit
     @pytest.mark.asyncio
     async def test_update_drawing_fails_wrong_type(self, drawing_repository: Callable[[int], FakeDrawingRepository]):
-        drawing_repository = drawing_repository(10)
+        drawing_repository = drawing_repository()
         all_drawings = await drawing_repository.list()
         id_ = all_drawings[0].id
         with pytest.raises(AttributeError):
@@ -120,7 +121,7 @@ class TestFakeDrawingRepository:
     @pytest.mark.unit
     @pytest.mark.asyncio
     async def test_delete_drawing(self, drawing_repository: Callable[[int], FakeDrawingRepository]):
-        drawing_repository = drawing_repository(10)
+        drawing_repository = drawing_repository()
         drawings = await drawing_repository.list()
         id_ = drawings[0].id
         start_len = len(drawings)
@@ -135,7 +136,7 @@ class TestFakeDrawingRepository:
     @pytest.mark.unit
     @pytest.mark.asyncio
     async def test_delete_drawing_fails_no_such_id(self, drawing_repository: Callable[[int], FakeDrawingRepository]):
-        drawing_repository = drawing_repository(10)
+        drawing_repository = drawing_repository()
         drawings = await drawing_repository.list()
         max_id = max(d.id for d in drawings)
         start_len = len(drawings)
@@ -148,13 +149,13 @@ class TestFakeDrawingRepository:
 
     @pytest.mark.unit
     def test_call_drawing_repository_returns_itself(self, drawing_repository: Callable[[int], FakeDrawingRepository]):
-        drawing_repository = drawing_repository(10)
+        drawing_repository = drawing_repository()
         assert drawing_repository == drawing_repository()
 
     @pytest.mark.unit
     @pytest.mark.asyncio
     async def test_truncate_database(self, drawing_repository: Callable[[int], FakeDrawingRepository]):
-        drawing_repository = drawing_repository(10)
+        drawing_repository = drawing_repository()
         await drawing_repository.clear()
         drawings = await drawing_repository.list()
 

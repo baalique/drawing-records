@@ -40,8 +40,9 @@ def registration_repository_empty_fixture() -> FakeRegistrationRepository:
 
 
 @pytest.fixture(name="registration_repository")
-def registration_repository_fixture(registrations) -> Callable[[int], FakeRegistrationRepository]:
-    def get_repository(amount=10):
+def registration_repository_fixture(registrations, default_database_size) \
+        -> Callable[[int], FakeRegistrationRepository]:
+    def get_repository(amount=default_database_size):
         all_registrations = registrations(amount)
         registration_repository = get_db().repositories["Registration"]
 
@@ -55,7 +56,7 @@ def registration_repository_fixture(registrations) -> Callable[[int], FakeRegist
 
         return registration_repository
 
-    return lambda amount=10: get_repository(amount)
+    return lambda amount=default_database_size: get_repository(amount)
 
 
 @pytest.fixture(name="create_registration_dto_from_repository")

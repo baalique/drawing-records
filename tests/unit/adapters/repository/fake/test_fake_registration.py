@@ -13,7 +13,7 @@ class TestFakeRegistrationRepository:
     @pytest.mark.unit
     @pytest.mark.asyncio
     async def test_add_one_registration(self, registration_repository, create_registration_dto_from_repository):
-        registration_repository = registration_repository(10)
+        registration_repository = registration_repository()
         registrations = await registration_repository.list()
         start_len = len(registrations)
 
@@ -26,7 +26,7 @@ class TestFakeRegistrationRepository:
     @pytest.mark.asyncio
     async def test_add_one_registration_increases_pk(self, registration_repository,
                                                      create_registration_dto_from_repository):
-        registration_repository = registration_repository(10)
+        registration_repository = registration_repository()
         registrations = await registration_repository.list()
 
         start_max_id = max(d.id for d in registrations)
@@ -39,7 +39,7 @@ class TestFakeRegistrationRepository:
     @pytest.mark.unit
     @pytest.mark.asyncio
     async def test_add_one_registration_fails_no_such_drawing(self, registration_repository, create_registration_dto):
-        registration_repository = registration_repository(10)
+        registration_repository = registration_repository()
         drawings = await registration_repository.session._repositories["Drawing"].list()
         max_drawing_id = max(d.id for d in drawings)
 
@@ -52,7 +52,7 @@ class TestFakeRegistrationRepository:
     @pytest.mark.unit
     @pytest.mark.asyncio
     async def test_get_one_registration(self, registration_repository, create_registration_dto_from_repository):
-        registration_repository = registration_repository(10)
+        registration_repository = registration_repository()
         registration = await registration_repository.add(
             create_registration_dto_from_repository(registration_repository))
         id_ = registration.id
@@ -64,7 +64,7 @@ class TestFakeRegistrationRepository:
     @pytest.mark.unit
     @pytest.mark.asyncio
     async def test_get_one_registration_fails(self, registration_repository):
-        registration_repository = registration_repository(10)
+        registration_repository = registration_repository()
         registrations = await registration_repository.list()
         max_id = max(d.id for d in registrations)
 
@@ -74,8 +74,8 @@ class TestFakeRegistrationRepository:
 
     @pytest.mark.unit
     @pytest.mark.asyncio
-    async def test_get_all_registrations(self, registration_repository):
-        nb_of_registrations = 10
+    async def test_get_all_registrations(self, registration_repository, default_database_size):
+        nb_of_registrations = default_database_size
 
         registration_repository = registration_repository(nb_of_registrations)
 
@@ -85,13 +85,13 @@ class TestFakeRegistrationRepository:
 
     @pytest.mark.unit
     def test_call_registration_repository_returns_itself(self, registration_repository):
-        registration_repository = registration_repository(10)
+        registration_repository = registration_repository()
         assert registration_repository is registration_repository()
 
     @pytest.mark.unit
     @pytest.mark.asyncio
     async def test_truncate_database(self, registration_repository):
-        registration_repository = registration_repository(10)
+        registration_repository = registration_repository()
         await registration_repository.clear()
         registrations = await registration_repository.list()
 

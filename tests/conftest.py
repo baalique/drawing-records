@@ -21,8 +21,8 @@ def drawing_fixture(factory_drawing):
 
 
 @pytest.fixture(name="drawings")
-def drawings_fixture(factory_drawing):
-    return lambda amount=10: make_many(factory_drawing, amount)
+def drawings_fixture(factory_drawing, default_database_size):
+    return lambda amount=default_database_size: make_many(factory_drawing, amount)
 
 
 @pytest.fixture(name="create_drawing_dto")
@@ -31,8 +31,8 @@ def create_drawing_dto_fixture(factory_drawing_create):
 
 
 @pytest.fixture(name="create_many_drawings_dto")
-def create_many_drawings_dto_fixture(factory_drawing_create):
-    return lambda amount=10: make_many(factory_drawing_create, amount)
+def create_many_drawings_dto_fixture(factory_drawing_create, default_database_size):
+    return lambda amount=default_database_size: make_many(factory_drawing_create, amount)
 
 
 @pytest.fixture(name="update_drawing_dto")
@@ -46,8 +46,8 @@ def registration_fixture(factory_registration):
 
 
 @pytest.fixture(name="registrations")
-def registrations_fixture(factory_registration):
-    return lambda amount=10: make_many(factory_registration, amount)
+def registrations_fixture(factory_registration, default_database_size):
+    return lambda amount=default_database_size: make_many(factory_registration, amount)
 
 
 @pytest.fixture(name="create_registration_dto")
@@ -56,5 +56,10 @@ def create_registration_dto_fixture(factory_registration_create):
 
 
 @pytest.fixture(name="create_many_registrations_dto")
-def create_many_registrations_dto_fixture(factory_registration_create):
-    return lambda amount=10: make_many(factory_registration_create, amount)
+def create_many_registrations_dto_fixture(factory_registration_create, default_database_size):
+    return lambda amount=default_database_size: make_many(factory_registration_create, amount)
+
+
+@pytest.fixture(name="default_database_size")
+def default_database_size_fixture():
+    return 10
