@@ -1,4 +1,5 @@
-from contextlib import asynccontextmanager
+import asyncio
+from contextlib import contextmanager
 from typing import List, Any
 
 from factory.base import FactoryMetaClass
@@ -10,8 +11,9 @@ def make_many(factory: FactoryMetaClass, amount) -> List[Any]:
     return [factory() for _ in range(amount)]
 
 
-@asynccontextmanager
-async def clear_database(app: Application):
-    await app.db.truncate_database()
+@contextmanager
+def clear_database(app: Application):
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(app.db.truncate_database())
     yield
-    await app.db.truncate_database()
+    loop.run_until_complete(app.db.truncate_database())

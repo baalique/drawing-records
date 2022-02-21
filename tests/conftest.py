@@ -1,6 +1,10 @@
+from typing import Callable, List
+
 import pytest
 from pytest_factoryboy import register
 
+from adapters.repository.fake import FakeDatabase
+from domain.entities.registration import Registration
 from tests.factories.entities.drawing import FactoryDrawing, FactoryDrawingCreate, FactoryDrawingUpdate
 from tests.factories.entities.registration import FactoryRegistration, FactoryRegistrationCreate
 from tests.utils import make_many
@@ -63,3 +67,23 @@ def create_many_registrations_dto_fixture(factory_registration_create, default_d
 @pytest.fixture(name="default_database_size")
 def default_database_size_fixture():
     return 10
+
+
+@pytest.fixture(name="fill_database")
+def fill_database_fixture(registrations: Callable[[int], List[Registration]],
+                          default_database_size: int) -> Callable[[FakeDatabase], FakeDatabase]:
+    regs = registrations
+
+    def get_db(db: FakeDatabase):
+        registrations_ = regs(default_database_size)
+        drawings = [r.drawing for r in registrations_]
+
+        db.repositories["Drawing"].session.data["Drawing"] = drawings
+        db.repositories["Registration"].session.data["Registration"] = registrations_
+
+        db.repositories["Drawing"]._pk_count = max(d.id for d in drawings) + 1
+        db.repositories["Registration"]._pk_count = max(r.id for r in registrations_) + 1
+
+        return db
+
+    return get_db
