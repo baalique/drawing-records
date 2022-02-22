@@ -19,7 +19,7 @@ class FakeSession(AbstractSession):
         self.data: Dict[str, List[AbstractEntity]] = {}
         self._repositories: Dict[str, AbstractRepository] = {}
 
-    def register_repository(self, model: str, repository: AbstractRepository):
+    def register_repository(self, model: str, repository: AbstractRepository) -> None:
         self.data[model] = []
         self._repositories[model] = repository
 
@@ -76,7 +76,7 @@ class FakeSession(AbstractSession):
     def _has_model(self, model: str) -> bool:
         return model in self.data
 
-    def close(self):
+    def close(self) -> None:
         pass
 
 

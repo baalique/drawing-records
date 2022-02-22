@@ -3,7 +3,7 @@ from adapters.repository.fake.drawing import FakeDrawingRepository
 from adapters.repository.fake.registration import FakeRegistrationRepository
 
 
-def get_db():
+def get_db() -> FakeDatabase:
     session = FakeSession()
     db = FakeDatabase(
         metadata=FakeMetadata(),
