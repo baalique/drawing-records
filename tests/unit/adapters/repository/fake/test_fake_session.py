@@ -1,5 +1,6 @@
 import pytest
-from adapters.exceptions.exceptions import InvalidEntityException
+
+from app.adapters.exceptions.exceptions import InvalidEntityException
 
 
 class TestFakeSession:

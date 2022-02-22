@@ -1,11 +1,12 @@
 from typing import Dict, List
 
 import pytest
-from config import get_initial_app_settings
-from domain.entities import AbstractEntity
 from fastapi.testclient import TestClient
-from initialization import init_app
-from utils import clear_database
+
+from app.config import get_initial_app_settings
+from app.domain.entities import AbstractEntity
+from app.initialization import init_app
+from tests.utils import clear_database
 
 
 @pytest.fixture(name="app_settings")

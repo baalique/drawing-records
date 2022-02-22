@@ -1,9 +1,10 @@
-import api
-from adapters.repository import AbstractDatabase
-from application import Application
-from config import Settings
-from db import app_db
 from fastapi import FastAPI
+
+from app import api
+from app.adapters.repository import AbstractDatabase
+from app.application import Application
+from app.config import Settings
+from app.db import app_db
 
 
 def init_database(settings: Settings) -> AbstractDatabase:

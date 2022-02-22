@@ -1,6 +1,7 @@
 import uvicorn
-from config import get_current_app_settings, get_initial_app_settings
-from initialization import init_app
+
+from app.config import get_current_app_settings, get_initial_app_settings
+from app.initialization import init_app
 
 app_settings = get_initial_app_settings()
 app = init_app(app_settings)

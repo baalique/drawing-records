@@ -3,7 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Optional
 
-from domain.entities import AbstractEntity
+from app.domain.entities import AbstractEntity
 
 
 class Drawing(AbstractEntity):

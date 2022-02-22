@@ -1,7 +1,7 @@
 import abc
 from typing import List, Optional
 
-from domain.entities import AbstractEntity
+from app.domain.entities import AbstractEntity
 
 
 class AbstractSession(abc.ABC):

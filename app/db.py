@@ -1,6 +1,6 @@
-from adapters.repository.fake import FakeDatabase, FakeMetadata, FakeSession
-from adapters.repository.fake.drawing import FakeDrawingRepository
-from adapters.repository.fake.registration import FakeRegistrationRepository
+from app.adapters.repository.fake import FakeDatabase, FakeMetadata, FakeSession
+from app.adapters.repository.fake.drawing import FakeDrawingRepository
+from app.adapters.repository.fake.registration import FakeRegistrationRepository
 
 
 def get_db() -> FakeDatabase:

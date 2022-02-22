@@ -1,10 +1,10 @@
 from typing import Iterable, List, Optional
 
-from adapters.repository import AbstractRepository
-from db import app_db
-from domain.entities.drawing import Drawing, DrawingCreate, DrawingUpdate
 from fastapi import APIRouter, Depends, HTTPException, Response, status
 
+from app.adapters.repository import AbstractRepository
+from app.db import app_db
+from app.domain.entities.drawing import Drawing, DrawingCreate, DrawingUpdate
 from app.domain.services import drawing as drawing_services
 
 router = APIRouter(prefix="/drawing", tags=["drawing"])

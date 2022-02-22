@@ -1,4 +1,4 @@
-from domain.entities import AbstractEntity
+from app.domain.entities import AbstractEntity
 
 
 class Status(AbstractEntity):

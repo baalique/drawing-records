@@ -2,10 +2,10 @@ from __future__ import annotations
 
 from typing import List, Optional
 
-from adapters.exceptions.exceptions import RelatedEntityNotExistsException
-from adapters.repository.fake import FakeBaseRepository, FakeSession
-from domain.entities import AbstractEntity
-from domain.entities.registration import Registration, RegistrationCreate
+from app.adapters.exceptions.exceptions import RelatedEntityNotExistsException
+from app.adapters.repository.fake import FakeBaseRepository, FakeSession
+from app.domain.entities import AbstractEntity
+from app.domain.entities.registration import Registration, RegistrationCreate
 
 
 class FakeRegistrationRepository(FakeBaseRepository):

@@ -4,14 +4,14 @@ import abc
 import pprint
 from typing import Callable, Dict, List, Optional
 
-from adapters.exceptions.exceptions import InvalidEntityException
-from adapters.repository import (
+from app.adapters.exceptions.exceptions import InvalidEntityException
+from app.adapters.repository import (
     AbstractDatabase,
     AbstractMetadata,
     AbstractRepository,
     AbstractSession,
 )
-from domain.entities import AbstractEntity
+from app.domain.entities import AbstractEntity
 
 
 class FakeSession(AbstractSession):

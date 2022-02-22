@@ -1,8 +1,9 @@
 from dataclasses import dataclass
 
-from adapters.repository import AbstractDatabase
-from config import Settings
 from fastapi import FastAPI
+
+from app.adapters.repository import AbstractDatabase
+from app.config import Settings
 
 
 @dataclass

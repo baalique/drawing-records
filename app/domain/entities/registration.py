@@ -1,7 +1,6 @@
 from datetime import datetime
 
-from domain.entities import AbstractEntity
-
+from app.domain.entities import AbstractEntity
 from app.domain.entities.drawing import Drawing
 
 

@@ -2,8 +2,8 @@ from __future__ import annotations
 
 from typing import List, Optional
 
-from adapters.repository.fake import FakeBaseRepository, FakeSession
-from domain.entities.drawing import Drawing, DrawingCreate, DrawingUpdate
+from app.adapters.repository.fake import FakeBaseRepository, FakeSession
+from app.domain.entities.drawing import Drawing, DrawingCreate, DrawingUpdate
 
 
 class FakeDrawingRepository(FakeBaseRepository):

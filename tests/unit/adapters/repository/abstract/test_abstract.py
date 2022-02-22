@@ -1,7 +1,8 @@
 from copy import deepcopy
 
 import pytest
-from adapters.repository import AbstractRepository, AbstractSession
+
+from app.adapters.repository import AbstractRepository, AbstractSession
 
 
 class TestAbstractSession:
