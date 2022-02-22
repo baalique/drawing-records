@@ -17,9 +17,67 @@ python-dotenv = "^0.19.2"
 pytest-asyncio = "^0.18.1"
 pytest-cov = "^3.0.0"
 requests = "^2.27.1"
+flakeheaven = "^0.11.1"
+flake8-bugbear = "^22.1.11"
+flake8-pytest-style = "^1.6.0"
+flake8-absolute-import = "^1.0.0"
+flake8-logging-format = "^0.6.0"
+flake8-bandit = "^2.1.2"
+flake8-comprehensions = "^3.8.0"
+flake8-eradicate = "^1.2.0"
+flake8-black = "^0.2.4"
+isort = "^5.10.1"
+flake8-isort = "^4.1.1"
 
 [tool.poetry.dev-dependencies]
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.isort]
+profile = "black"
+
+[tool.flakeheaven]
+count = true
+exclude = [
+    "__pycache__",
+    ".git",
+    ".mypy_cache",
+    ".pytest_cache"
+]
+format = "grouped"
+max_line_length = 90
+show_source = true
+
+[tool.flakeheaven.plugins]
+flake8-absolute-import = ["+*"]
+flake8-bandit = ["+*"]
+flake8-black = ["+*"]
+flake8-bugbear = ["+*"]
+flake8-comprehensions = ["+*"]
+flake8-eradicate = ["+*"]
+flake8-isort = ["+*"]
+flake8-logging-format = ["+*"]
+flake8-pytest-style = ["+*"]
+mccabe = ["+*"]
+pycodestyle = [
+    "+*",
+    "-W503", # W503 line break before binary operator
+]
+pyflakes = ["+*"]
+pylint = ["+*"]
+
+[tool.flakeheaven.exceptions."tests/"]
+flake8-annotations = ["-*"]
+flake8-bandit = [
+    "-S101", # S101 assert used
+]
+flake8-pytest-style = [
+    "-PT023", # PT023 use @pytest.mark.{mark_name}{expected_parens} over @pytest.mark.{mark_name}{actual_parens}
+]
+
+[tool.flakeheaven.exceptions."app/api/"]
+flake8-bugbear = [
+    "-B008", # B008 Do not perform function calls in argument defaults.
+]
