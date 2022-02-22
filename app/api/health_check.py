@@ -1,7 +1,6 @@
-from fastapi import APIRouter, status
-
 from config import get_current_app_settings
 from domain.entities.status import Status
+from fastapi import APIRouter, status
 
 router = APIRouter(prefix="/health-check", tags=["health-check"])
 
@@ -12,5 +11,5 @@ def health_check():
     return {
         "title": settings.PROJECT_TITLE,
         "description": settings.PROJECT_DESCRIPTION,
-        "version": settings.PROJECT_VERSION
+        "version": settings.PROJECT_VERSION,
     }

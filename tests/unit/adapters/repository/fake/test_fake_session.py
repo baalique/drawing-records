@@ -1,5 +1,4 @@
 import pytest
-
 from adapters.exceptions.exceptions import InvalidEntityException
 
 

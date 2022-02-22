@@ -1,8 +1,8 @@
+from api import drawing, registration
+from config import get_current_app_settings
 from fastapi import APIRouter
 
-from api import drawing, registration
 from app.api import health_check
-from config import get_current_app_settings
 
 router = APIRouter(prefix=get_current_app_settings().API_PREFIX)
 

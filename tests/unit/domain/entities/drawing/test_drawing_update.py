@@ -17,7 +17,14 @@ class TestDrawingUpdate:
                 DrawingUpdate(**invalid_drawing_update_dict)
 
         def test_optional_attributes_are_not_required(self, valid_drawing_update_dict):
-            for attr in ("name", "parent_id", "category", "project", "drawing_data", "path_to_file"):
+            for attr in (
+                "name",
+                "parent_id",
+                "category",
+                "project",
+                "drawing_data",
+                "path_to_file",
+            ):
                 copy_drawing_dict = deepcopy(valid_drawing_update_dict)
                 copy_drawing_dict.pop(attr)
                 assert DrawingUpdate(**copy_drawing_dict)

@@ -1,10 +1,9 @@
-from fastapi import FastAPI
-
 import api
 from adapters.repository import AbstractDatabase
 from application import Application
 from config import Settings
 from db import app_db
+from fastapi import FastAPI
 
 
 def init_database(settings: Settings) -> AbstractDatabase:
@@ -16,15 +15,11 @@ def init_app(settings: Settings) -> Application:
         title=settings.PROJECT_TITLE,
         description=settings.PROJECT_DESCRIPTION,
         version=settings.PROJECT_VERSION,
-        debug=settings.DEBUG
+        debug=settings.DEBUG,
     )
 
     fastapi_app.include_router(api.router)
 
     db = init_database(settings)
 
-    return Application(
-        app=fastapi_app,
-        db=db,
-        settings=settings
-    )
+    return Application(app=fastapi_app, db=db, settings=settings)

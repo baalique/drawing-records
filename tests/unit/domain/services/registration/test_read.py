@@ -1,6 +1,9 @@
 import pytest
 
-from app.domain.services.registration import get_registration_by_id, get_all_registrations
+from app.domain.services.registration import (
+    get_all_registrations,
+    get_registration_by_id,
+)
 
 
 @pytest.mark.unit

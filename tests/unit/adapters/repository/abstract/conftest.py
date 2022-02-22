@@ -1,8 +1,7 @@
 from typing import Callable
 
 import pytest
-
-from adapters.repository import AbstractSession, AbstractRepository
+from adapters.repository import AbstractRepository, AbstractSession
 
 
 @pytest.fixture(name="class_inherited_from_abstract_session")

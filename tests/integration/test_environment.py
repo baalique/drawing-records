@@ -1,6 +1,5 @@
 import pytest
-
-from config import Settings, get_initial_app_settings, get_current_app_settings
+from config import Settings, get_current_app_settings, get_initial_app_settings
 
 
 @pytest.mark.integration

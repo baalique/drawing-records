@@ -1,6 +1,6 @@
 import pytest
 
-from app.domain.services.drawing import get_drawing_by_id, get_all_drawings
+from app.domain.services.drawing import get_all_drawings, get_drawing_by_id
 
 
 @pytest.mark.unit

@@ -1,4 +1,4 @@
-from adapters.repository.fake import FakeSession, FakeDatabase, FakeMetadata
+from adapters.repository.fake import FakeDatabase, FakeMetadata, FakeSession
 from adapters.repository.fake.drawing import FakeDrawingRepository
 from adapters.repository.fake.registration import FakeRegistrationRepository
 
@@ -9,8 +9,8 @@ def get_db():
         metadata=FakeMetadata(),
         repositories={
             "Drawing": FakeDrawingRepository(session),
-            "Registration": FakeRegistrationRepository(session)
-        }
+            "Registration": FakeRegistrationRepository(session),
+        },
     )
     return db
 

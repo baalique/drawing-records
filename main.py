@@ -1,6 +1,5 @@
 import uvicorn
-
-from config import get_initial_app_settings, get_current_app_settings
+from config import get_current_app_settings, get_initial_app_settings
 from initialization import init_app
 
 app_settings = get_initial_app_settings()
@@ -16,7 +15,7 @@ def start_app() -> None:
         host=settings.HOST_URL,
         port=settings.HOST_PORT,
         reload=settings.RELOAD,
-        log_level=settings.LOG_LEVEL
+        log_level=settings.LOG_LEVEL,
     )
 
 

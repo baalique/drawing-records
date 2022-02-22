@@ -2,10 +2,15 @@ from __future__ import annotations
 
 import abc
 import pprint
-from typing import Callable, Optional, List, Dict
+from typing import Callable, Dict, List, Optional
 
 from adapters.exceptions.exceptions import InvalidEntityException
-from adapters.repository import AbstractSession, AbstractDatabase, AbstractMetadata, AbstractRepository
+from adapters.repository import (
+    AbstractDatabase,
+    AbstractMetadata,
+    AbstractRepository,
+    AbstractSession,
+)
 from domain.entities import AbstractEntity
 
 
@@ -25,7 +30,9 @@ class FakeSession(AbstractSession):
         self.data[type_.__name__].append(entity)
         return entity
 
-    async def get(self, model: str, predicate: Callable[[AbstractEntity], bool]) -> List[AbstractEntity]:
+    async def get(
+        self, model: str, predicate: Callable[[AbstractEntity], bool]
+    ) -> List[AbstractEntity]:
         if not self._has_model(model):
             raise InvalidEntityException(f"Cannot get entity with type {model}")
 
@@ -36,8 +43,12 @@ class FakeSession(AbstractSession):
             raise InvalidEntityException(f"Cannot get entities with type {model}")
         return self.data[model]
 
-    async def update(self, model: str, entity: AbstractEntity, predicate: Callable[[AbstractEntity], bool]) \
-            -> Optional[AbstractEntity]:
+    async def update(
+        self,
+        model: str,
+        entity: AbstractEntity,
+        predicate: Callable[[AbstractEntity], bool],
+    ) -> Optional[AbstractEntity]:
         if not self._has_model(model):
             raise InvalidEntityException(f"Cannot update entities with type {model}")
         for idx, e in enumerate(self.data[model]):
@@ -47,7 +58,9 @@ class FakeSession(AbstractSession):
                 self.data[model][idx] = updated_entity
                 return updated_entity
 
-    async def delete(self, model: str, predicate: Callable[[AbstractEntity], bool]) -> bool:
+    async def delete(
+        self, model: str, predicate: Callable[[AbstractEntity], bool]
+    ) -> bool:
         if not self._has_model(model):
             raise InvalidEntityException(f"Cannot delete entities with type {model}")
 
@@ -72,7 +85,9 @@ class FakeMetadata(AbstractMetadata):
 
 
 class FakeDatabase(AbstractDatabase):
-    def __init__(self, metadata: AbstractMetadata, repositories: Dict[str, AbstractRepository]):
+    def __init__(
+        self, metadata: AbstractMetadata, repositories: Dict[str, AbstractRepository]
+    ):
         self.metadata = metadata
         self.repositories = repositories
 
@@ -84,7 +99,9 @@ class FakeDatabase(AbstractDatabase):
         pass
 
     def __repr__(self) -> str:
-        return pprint.pformat(self.repositories and list(self.repositories.values())[0].session.data)
+        return pprint.pformat(
+            self.repositories and list(self.repositories.values())[0].session.data
+        )
 
 
 class FakeBaseRepository(AbstractRepository, abc.ABC):

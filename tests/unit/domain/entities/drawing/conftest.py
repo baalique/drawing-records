@@ -1,4 +1,4 @@
-from typing import Dict, Any
+from typing import Any, Dict
 
 import pytest
 
@@ -12,7 +12,7 @@ def invalid_drawing_dict_fixture() -> Dict[str, Any]:
         "category": [1],
         "project": [1],
         "drawing_data": 1,
-        "path_to_file": 1
+        "path_to_file": 1,
     }
 
 
@@ -23,10 +23,8 @@ def valid_drawing_create_dict_fixture() -> Dict[str, Any]:
         "parent_id": 1,
         "category": "test category",
         "project": "test project",
-        "drawing_data": {
-            "test_data": "test data"
-        },
-        "path_to_file": "/home/test/test.some"
+        "drawing_data": {"test_data": "test data"},
+        "path_to_file": "/home/test/test.some",
     }
 
 
@@ -38,7 +36,7 @@ def invalid_drawing_create_dict_fixture() -> Dict[str, Any]:
         "category": [1],
         "project": [1],
         "drawing_data": 1,
-        "path_to_file": 1
+        "path_to_file": 1,
     }
 
 
@@ -49,10 +47,8 @@ def valid_drawing_update_dict_fixture() -> Dict[str, Any]:
         "parent_id": 1,
         "category": "test category",
         "project": "test project",
-        "drawing_data": {
-            "test_data": "test data"
-        },
-        "path_to_file": "/home/test/test.some"
+        "drawing_data": {"test_data": "test data"},
+        "path_to_file": "/home/test/test.some",
     }
 
 
@@ -64,5 +60,5 @@ def invalid_drawing_update_dict_fixture() -> Dict[str, Any]:
         "category": [1],
         "project": [1],
         "drawing_data": 1,
-        "path_to_file": 1
+        "path_to_file": 1,
     }

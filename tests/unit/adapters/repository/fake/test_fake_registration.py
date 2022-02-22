@@ -1,5 +1,4 @@
 import pytest
-
 from adapters.exceptions.exceptions import RelatedEntityNotExistsException
 
 
@@ -12,33 +11,41 @@ class TestFakeRegistrationRepository:
 
     @pytest.mark.unit
     @pytest.mark.asyncio
-    async def test_add_one_registration(self, registration_repository, create_registration_dto_from_repository):
+    async def test_add_one_registration(
+        self, registration_repository, create_registration_dto_from_repository
+    ):
         registration_repository = registration_repository()
         registrations = await registration_repository.list()
         start_len = len(registrations)
 
-        await registration_repository.add(create_registration_dto_from_repository(registration_repository))
+        await registration_repository.add(
+            create_registration_dto_from_repository(registration_repository)
+        )
         new_registrations = await registration_repository.list()
 
         assert len(new_registrations) == start_len + 1
 
     @pytest.mark.unit
     @pytest.mark.asyncio
-    async def test_add_one_registration_increases_pk(self, registration_repository,
-                                                     create_registration_dto_from_repository):
+    async def test_add_one_registration_increases_pk(
+        self, registration_repository, create_registration_dto_from_repository
+    ):
         registration_repository = registration_repository()
         registrations = await registration_repository.list()
 
         start_max_id = max(d.id for d in registrations)
 
         new_registration = await registration_repository.add(
-            create_registration_dto_from_repository(registration_repository))
+            create_registration_dto_from_repository(registration_repository)
+        )
 
         assert new_registration.id == start_max_id + 1
 
     @pytest.mark.unit
     @pytest.mark.asyncio
-    async def test_add_one_registration_fails_no_such_drawing(self, registration_repository, create_registration_dto):
+    async def test_add_one_registration_fails_no_such_drawing(
+        self, registration_repository, create_registration_dto
+    ):
         registration_repository = registration_repository()
         drawings = await registration_repository.session._repositories["Drawing"].list()
         max_drawing_id = max(d.id for d in drawings)
@@ -51,10 +58,13 @@ class TestFakeRegistrationRepository:
 
     @pytest.mark.unit
     @pytest.mark.asyncio
-    async def test_get_one_registration(self, registration_repository, create_registration_dto_from_repository):
+    async def test_get_one_registration(
+        self, registration_repository, create_registration_dto_from_repository
+    ):
         registration_repository = registration_repository()
         registration = await registration_repository.add(
-            create_registration_dto_from_repository(registration_repository))
+            create_registration_dto_from_repository(registration_repository)
+        )
         id_ = registration.id
 
         added_registration = await registration_repository.get(id_)
@@ -74,7 +84,9 @@ class TestFakeRegistrationRepository:
 
     @pytest.mark.unit
     @pytest.mark.asyncio
-    async def test_get_all_registrations(self, registration_repository, default_database_size):
+    async def test_get_all_registrations(
+        self, registration_repository, default_database_size
+    ):
         nb_of_registrations = default_database_size
 
         registration_repository = registration_repository(nb_of_registrations)

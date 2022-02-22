@@ -1,7 +1,6 @@
 from typing import Callable
 
 import pytest
-
 from adapters.repository.fake import FakeSession
 from adapters.repository.fake.drawing import FakeDrawingRepository
 from adapters.repository.fake.registration import FakeRegistrationRepository
@@ -20,7 +19,9 @@ def drawing_repository_empty_fixture() -> FakeDrawingRepository:
 
 
 @pytest.fixture(name="drawing_repository")
-async def drawing_repository_fixture(drawings) -> Callable[[int], FakeDrawingRepository]:
+async def drawing_repository_fixture(
+    drawings,
+) -> Callable[[int], FakeDrawingRepository]:
     def get_repository(amount=10):
         all_drawings = drawings(amount)
 
@@ -40,8 +41,9 @@ def registration_repository_empty_fixture() -> FakeRegistrationRepository:
 
 
 @pytest.fixture(name="registration_repository")
-def registration_repository_fixture(registrations, default_database_size) \
-        -> Callable[[int], FakeRegistrationRepository]:
+def registration_repository_fixture(
+    registrations, default_database_size
+) -> Callable[[int], FakeRegistrationRepository]:
     def get_repository(amount=default_database_size):
         all_registrations = registrations(amount)
         registration_repository = get_db().repositories["Registration"]
@@ -52,7 +54,9 @@ def registration_repository_fixture(registrations, default_database_size) \
         registration_repository.session.data["Drawing"] = drawings
 
         registration_repository._pk_count = max(r.id for r in all_registrations) + 1
-        registration_repository.session._repositories["Drawing"]._pk_count = max(d.id for d in drawings) + 1
+        registration_repository.session._repositories["Drawing"]._pk_count = (
+            max(d.id for d in drawings) + 1
+        )
 
         return registration_repository
 
@@ -60,20 +64,26 @@ def registration_repository_fixture(registrations, default_database_size) \
 
 
 @pytest.fixture(name="create_registration_dto_from_repository")
-def create_registration_dto_from_repository_fixture(factory_registration_create) \
-        -> Callable[[FakeRegistrationRepository], RegistrationCreate]:
+def create_registration_dto_from_repository_fixture(
+    factory_registration_create,
+) -> Callable[[FakeRegistrationRepository], RegistrationCreate]:
     def get_dto(registration_repository):
         drawing_id = registration_repository.session.data["Drawing"][-1].id
-        return RegistrationCreate(**factory_registration_create().dict() | {"drawing_id": drawing_id})
+        return RegistrationCreate(
+            **factory_registration_create().dict() | {"drawing_id": drawing_id}
+        )
 
     return get_dto
 
 
 @pytest.fixture(name="create_many_registrations_dtos_from_repository")
-def create_many_registration_dtos_from_repository_fixture(factory_registration_create) \
-        -> Callable[[FakeRegistrationRepository], RegistrationCreate]:
+def create_many_registration_dtos_from_repository_fixture(
+    factory_registration_create,
+) -> Callable[[FakeRegistrationRepository], RegistrationCreate]:
     def get_dtos(registration_repository):
         drawing_id = registration_repository.session.data["Drawing"][-1].id
-        return RegistrationCreate(**factory_registration_create().dict() | {"drawing_id": drawing_id})
+        return RegistrationCreate(
+            **factory_registration_create().dict() | {"drawing_id": drawing_id}
+        )
 
     return get_dtos

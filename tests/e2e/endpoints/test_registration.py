@@ -1,8 +1,7 @@
 import pytest
+from adapters.exceptions.exceptions import RelatedEntityNotExistsException
 from fastapi import status
 from fastapi.encoders import jsonable_encoder
-
-from adapters.exceptions.exceptions import RelatedEntityNotExistsException
 
 
 class TestRegistrationAPI:
@@ -12,30 +11,30 @@ class TestRegistrationAPI:
             drawing_id = test_data["Drawing"][0].id
             response = test_client.post(
                 "registration/new",
-                json=jsonable_encoder(create_registration_dto) | {"drawing_id": drawing_id}
+                json=jsonable_encoder(create_registration_dto)
+                | {"drawing_id": drawing_id},
             )
             data = response.json()
 
-            assert response.status_code == status.HTTP_201_CREATED
-            assert data["drawing"]["id"] == drawing_id
+        assert response.status_code == status.HTTP_201_CREATED
+        assert data["drawing"]["id"] == drawing_id
 
     @pytest.mark.e2e
     def test_create_fails_validation(self, test_client, test_data):
         with test_client:
-            response = test_client.post(
-                "registration/new",
-                json={"wrong data": 0}
-            )
+            response = test_client.post("registration/new", json={"wrong data": 0})
 
             assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
 
     @pytest.mark.e2e
-    def test_create_fails_no_such_entity(self, test_client, test_data, create_registration_dto):
+    def test_create_fails_no_such_entity(
+        self, test_client, test_data, create_registration_dto
+    ):
         with test_client:
             with pytest.raises(RelatedEntityNotExistsException):
                 test_client.post(
                     "registration/new",
-                    json=jsonable_encoder(create_registration_dto) | {"drawing_id": 1}
+                    json=jsonable_encoder(create_registration_dto) | {"drawing_id": 1},
                 )
 
     @pytest.mark.e2e

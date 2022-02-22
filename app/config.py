@@ -30,7 +30,10 @@ class Settings(BaseSettings):
 
     @property
     def dsn(self) -> str:
-        return f"postgresql://{self.DB_USERNAME}:{self.DB_PASSWORD}@{self.DB_URI}:{self.DB_PORT}/{self.DB_NAME}"
+        return (
+            f"postgresql://{self.DB_USERNAME}:{self.DB_PASSWORD}"
+            f"@{self.DB_URI}:{self.DB_PORT}/{self.DB_NAME}"
+        )
 
     class Config:
         env_file = "../.env"

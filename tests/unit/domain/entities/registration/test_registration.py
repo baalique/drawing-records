@@ -23,7 +23,9 @@ class TestRegistration:
                 with pytest.raises(ValidationError):
                     Registration(**copy_registration_dict)
 
-        def test_set_invalid_attributes(self, valid_registration_dict, invalid_registration_dict):
+        def test_set_invalid_attributes(
+            self, valid_registration_dict, invalid_registration_dict
+        ):
             registration = Registration(**valid_registration_dict)
             for attr in ("id", "drawing", "created_at"):
                 with pytest.raises(ValidationError):

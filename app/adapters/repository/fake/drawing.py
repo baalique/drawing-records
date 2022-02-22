@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-from typing import Optional, List
+from typing import List, Optional
 
-from adapters.repository.fake import FakeSession, FakeBaseRepository
+from adapters.repository.fake import FakeBaseRepository, FakeSession
 from domain.entities.drawing import Drawing, DrawingCreate, DrawingUpdate
 
 
@@ -12,10 +12,7 @@ class FakeDrawingRepository(FakeBaseRepository):
         self.session.register_repository("Drawing", self)
 
     async def add(self, drawing_create: DrawingCreate) -> Drawing:
-        drawing = Drawing(
-            id=self._pk_count,
-            **drawing_create.dict()
-        )
+        drawing = Drawing(id=self._pk_count, **drawing_create.dict())
         self._pk_count += 1
         return await self.session.add(drawing)
 

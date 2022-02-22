@@ -17,7 +17,14 @@ class TestDrawing:
                 Drawing(**invalid_drawing_dict)
 
         def test_is_required_attribute(self, valid_drawing_dict):
-            for attr in ("id", "name", "category", "project", "drawing_data", "path_to_file"):
+            for attr in (
+                "id",
+                "name",
+                "category",
+                "project",
+                "drawing_data",
+                "path_to_file",
+            ):
                 copy_drawing_dict = deepcopy(valid_drawing_dict)
                 copy_drawing_dict.pop(attr)
                 with pytest.raises(ValidationError):
@@ -29,11 +36,19 @@ class TestDrawing:
 
         def test_set_invalid_attributes(self, valid_drawing_dict, invalid_drawing_dict):
             drawing = Drawing(**valid_drawing_dict)
-            for attr in ("id", "name", "parent", "category", "project", "drawing_data", "path_to_file"):
+            for attr in (
+                "id",
+                "name",
+                "parent",
+                "category",
+                "project",
+                "drawing_data",
+                "path_to_file",
+            ):
                 with pytest.raises(ValidationError):
                     setattr(drawing, attr, invalid_drawing_dict[attr])
 
         def test_parent_can_be_drawing(self, valid_drawing_dict):
             drawing = Drawing(**valid_drawing_dict)
             parent_drawing = Drawing(**(valid_drawing_dict | {"id": 2}))
-            setattr(drawing, "parent", parent_drawing)
+            drawing.parent = parent_drawing

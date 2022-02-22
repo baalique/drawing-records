@@ -1,10 +1,9 @@
 import asyncio
 from contextlib import contextmanager
-from typing import List, Any
-
-from factory.base import FactoryMetaClass
+from typing import Any, List
 
 from application import Application
+from factory.base import FactoryMetaClass
 
 
 def make_many(factory: FactoryMetaClass, amount) -> List[Any]:
