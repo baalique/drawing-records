@@ -2,6 +2,10 @@
 [run]
 branch = True
 
+[paths]
+source =
+    app/
+
 [report]
 # Regexes for lines to exclude from consideration
 exclude_lines =
@@ -16,6 +20,9 @@ exclude_lines =
     raise AssertionError
     raise NotImplementedError
     pass
+
+    # Exclude Ellipsis:
+    \.\.\.
 
     # Don't complain if non-runnable code isn't run:
     if 0:
