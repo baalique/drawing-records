@@ -1,4 +1,4 @@
-from typing import Awaitable, Callable, Iterable
+from typing import Awaitable, Callable, Iterable, Optional
 
 from app.domain.entities.registration import Registration, RegistrationCreate
 
@@ -11,8 +11,8 @@ async def create_registration(
 
 
 async def get_registration_by_id(
-    get_one: Callable[[int], Awaitable[Registration]], id: int
-) -> Registration:
+    get_one: Callable[[int], Awaitable[Optional[Registration]]], id: int
+) -> Optional[Registration]:
     return await get_one(id)
 
 

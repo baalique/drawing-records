@@ -10,8 +10,8 @@ async def create_drawing(
 
 
 async def get_drawing_by_id(
-    get_one: Callable[[int], Awaitable[Drawing]], id: int
-) -> Drawing:
+    get_one: Callable[[int], Awaitable[Optional[Drawing]]], id: int
+) -> Optional[Drawing]:
     return await get_one(id)
 
 

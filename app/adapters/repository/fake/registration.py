@@ -1,8 +1,10 @@
 from __future__ import annotations
 
+from functools import partial
 from typing import List, Optional
 
 from app.adapters.exceptions.exceptions import RelatedEntityNotExistsException
+from app.adapters.repository import is_id_equals
 from app.adapters.repository.fake import FakeSession
 from app.adapters.repository.protocols.entities import RegistrationRepository
 from app.domain.entities.registration import Registration, RegistrationCreate
@@ -16,7 +18,8 @@ class FakeRegistrationRepository(RegistrationRepository):
 
     async def add(self, registration_create: RegistrationCreate) -> Registration:
         drawings = await self.session.get(
-            "Drawing", predicate=lambda d: d.id == registration_create.drawing_id
+            "Drawing",
+            predicate=partial(is_id_equals, to=registration_create.drawing_id),
         )
         if not drawings:
             raise RelatedEntityNotExistsException(
@@ -32,7 +35,9 @@ class FakeRegistrationRepository(RegistrationRepository):
         return await self.session.add(registration)
 
     async def get(self, id: int) -> Optional[Registration]:
-        registrations = await self.session.get("Registration", lambda d: d.id == id)
+        registrations = await self.session.get(
+            "Registration", predicate=partial(is_id_equals, to=id)
+        )
         return registrations[0] if registrations else None
 
     async def list(self) -> List[Registration]:

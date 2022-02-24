@@ -45,7 +45,9 @@ class FakeSession(Session):
 
         res = []
 
-        for idx, e in enumerate(self.data[model]):
+        data: List[E] = self.data[model]
+
+        for idx, e in enumerate(data):
             if predicate(e):
                 updated_entity = e.copy(update=kwargs)
                 self.data[model][idx] = updated_entity
