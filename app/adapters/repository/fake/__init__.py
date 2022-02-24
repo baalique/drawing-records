@@ -1,66 +1,59 @@
 from __future__ import annotations
 
-import abc
-import pprint
-from typing import Callable, Dict, List, Optional
+from typing import Callable, Dict, List, TypeVar
 
 from app.adapters.exceptions.exceptions import InvalidEntityException
-from app.adapters.repository import (
-    AbstractDatabase,
-    AbstractMetadata,
-    AbstractRepository,
-    AbstractSession,
-)
+from app.adapters.repository import AbstractDatabase, AbstractMetadata
+from app.adapters.repository.protocols import Repository, Session
 from app.domain.entities import AbstractEntity
 
+E = TypeVar("E", bound=AbstractEntity)
 
-class FakeSession(AbstractSession):
+
+class FakeSession(Session):
     def __init__(self):
-        self.data: Dict[str, List[AbstractEntity]] = {}
-        self._repositories: Dict[str, AbstractRepository] = {}
+        self.data: Dict[str, List[E]] = {}
+        self._repositories: Dict[str, Repository] = {}
 
-    def register_repository(self, model: str, repository: AbstractRepository) -> None:
+    def register_repository(self, model: str, repository: Repository) -> None:
         self.data[model] = []
         self._repositories[model] = repository
 
-    async def add(self, entity: AbstractEntity) -> AbstractEntity:
+    async def add(self, entity: E) -> E:
         type_ = type(entity)
         if not self._has_model(type_.__name__):
             raise InvalidEntityException(f"Cannot add entity with type {type_}")
         self.data[type_.__name__].append(entity)
         return entity
 
-    async def get(
-        self, model: str, predicate: Callable[[AbstractEntity], bool]
-    ) -> List[AbstractEntity]:
+    async def get(self, model: str, predicate: Callable[[E], bool]) -> List[E]:
         if not self._has_model(model):
             raise InvalidEntityException(f"Cannot get entity with type {model}")
 
         return list(filter(predicate, self.data[model]))
 
-    async def list(self, model: str) -> List[AbstractEntity]:
+    async def list(self, model: str) -> List[E]:
         if not self._has_model(model):
             raise InvalidEntityException(f"Cannot get entities with type {model}")
         return self.data[model]
 
     async def update(
-        self,
-        model: str,
-        entity: AbstractEntity,
-        predicate: Callable[[AbstractEntity], bool],
-    ) -> Optional[AbstractEntity]:
+        self, model: str, predicate: Callable[[E], bool], **kwargs
+    ) -> List[E]:
         if not self._has_model(model):
             raise InvalidEntityException(f"Cannot update entities with type {model}")
+
+        res = []
+
         for idx, e in enumerate(self.data[model]):
             if predicate(e):
-                update_data = entity.dict(exclude_unset=True)
-                updated_entity = e.copy(update=update_data)
+                updated_entity = e.copy(update=kwargs)
                 self.data[model][idx] = updated_entity
-                return updated_entity
+                res.append(updated_entity)
 
-    async def delete(
-        self, model: str, predicate: Callable[[AbstractEntity], bool]
-    ) -> bool:
+        return res
+
+    async def delete(self, model: str, predicate: Callable[[E], bool]) -> bool:
         if not self._has_model(model):
             raise InvalidEntityException(f"Cannot delete entities with type {model}")
 
@@ -85,9 +78,7 @@ class FakeMetadata(AbstractMetadata):
 
 
 class FakeDatabase(AbstractDatabase):
-    def __init__(
-        self, metadata: AbstractMetadata, repositories: Dict[str, AbstractRepository]
-    ):
+    def __init__(self, metadata: AbstractMetadata, repositories: Dict[str, Repository]):
         self.metadata = metadata
         self.repositories = repositories
 
@@ -97,36 +88,3 @@ class FakeDatabase(AbstractDatabase):
 
     def close(self) -> None:
         pass
-
-    def __repr__(self) -> str:
-        return pprint.pformat(
-            self.repositories and list(self.repositories.values())[0].session.data
-        )
-
-
-class FakeBaseRepository(AbstractRepository, abc.ABC):
-    def __init__(self, session: FakeSession):
-        self.session = session
-        self._pk_count = 1
-
-    def __call__(self) -> FakeBaseRepository:
-        return self
-
-    @abc.abstractmethod
-    async def add(self, entity: AbstractEntity) -> AbstractEntity:
-        raise NotImplementedError
-
-    @abc.abstractmethod
-    async def get(self, *args, **kwargs) -> Optional[AbstractEntity]:
-        raise NotImplementedError
-
-    @abc.abstractmethod
-    async def list(self, *args, **kwargs) -> List[AbstractEntity]:
-        raise NotImplementedError
-
-    async def clear(self) -> None:
-        self._reload_pk()
-        await self.session.clear()
-
-    def _reload_pk(self) -> None:
-        self._pk_count = 1

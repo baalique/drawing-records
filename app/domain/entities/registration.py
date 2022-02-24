@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from app.domain.entities import AbstractEntity
+from app.domain.entities import AbstractEntity, AbstractEntityCreate
 from app.domain.entities.drawing import Drawing
 
 
@@ -14,6 +14,6 @@ class Registration(AbstractEntity):
         validate_assignment = True
 
 
-class RegistrationCreate(AbstractEntity):
+class RegistrationCreate(AbstractEntityCreate):
     drawing_id: int
     created_at: datetime

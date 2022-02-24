@@ -2,14 +2,14 @@ from typing import Iterable, List, Optional
 
 from fastapi import APIRouter, Depends, HTTPException, Response, status
 
-from app.adapters.repository import AbstractRepository
+from app.adapters.repository.fake.drawing import FakeDrawingRepository
 from app.db import app_db
 from app.domain.entities.drawing import Drawing, DrawingCreate, DrawingUpdate
 from app.domain.services import drawing as drawing_services
 
 router = APIRouter(prefix="/drawing", tags=["drawing"])
 
-drawing_repo = app_db.repositories["Drawing"]
+drawing_repo = lambda: app_db.repositories["Drawing"]
 
 
 @router.post(
@@ -19,7 +19,7 @@ drawing_repo = app_db.repositories["Drawing"]
     responses={201: {"description": "Item created"}},
 )
 async def create_drawing(
-    drawing: DrawingCreate, db: AbstractRepository = Depends(drawing_repo)
+    drawing: DrawingCreate, db: FakeDrawingRepository = Depends(drawing_repo)
 ) -> Drawing:
     return await drawing_services.create_drawing(db.add, dto=drawing)
 
@@ -31,7 +31,7 @@ async def create_drawing(
     responses={200: {"description": "Items found"}},
 )
 async def get_all_drawings(
-    db: AbstractRepository = Depends(drawing_repo),
+    db: FakeDrawingRepository = Depends(drawing_repo),
 ) -> Iterable[Drawing]:
     return await drawing_services.get_all_drawings(db.list)
 
@@ -46,7 +46,7 @@ async def get_all_drawings(
     },
 )
 async def get_drawing(
-    id: int, db: AbstractRepository = Depends(drawing_repo)
+    id: int, db: FakeDrawingRepository = Depends(drawing_repo)
 ) -> Optional[Drawing]:
     drawing = await drawing_services.get_drawing_by_id(db.get, id=id)
     if drawing is None:
@@ -66,14 +66,16 @@ async def get_drawing(
     },
 )
 async def update_drawing(
-    id: int, drawing: DrawingUpdate, db: AbstractRepository = Depends(drawing_repo)
+    id: int, drawing: DrawingUpdate, db: FakeDrawingRepository = Depends(drawing_repo)
 ) -> Drawing:
-    drawing = await drawing_services.update_drawing(db.update, dto=drawing, id=id)
-    if drawing is None:
+    updated_drawing = await drawing_services.update_drawing(
+        db.update, dto=drawing, id=id
+    )
+    if updated_drawing is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="Item not found"
         )
-    return drawing
+    return updated_drawing
 
 
 @router.delete(
@@ -82,7 +84,7 @@ async def update_drawing(
     responses={404: {"description": "Item not found"}},
 )
 async def delete_drawing(
-    id: int, db: AbstractRepository = Depends(drawing_repo)
+    id: int, db: FakeDrawingRepository = Depends(drawing_repo)
 ) -> Response:
     res = await drawing_services.delete_drawing(db.delete, id=id)
     if not res:

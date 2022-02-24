@@ -3,7 +3,11 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Optional
 
-from app.domain.entities import AbstractEntity
+from app.domain.entities import (
+    AbstractEntity,
+    AbstractEntityCreate,
+    AbstractEntityUpdate,
+)
 
 
 class Drawing(AbstractEntity):
@@ -20,7 +24,7 @@ class Drawing(AbstractEntity):
         validate_assignment = True
 
 
-class DrawingCreate(AbstractEntity):
+class DrawingCreate(AbstractEntityCreate):
     name: str
     parent_id: Optional[int]
     category: str
@@ -29,7 +33,7 @@ class DrawingCreate(AbstractEntity):
     path_to_file: Path
 
 
-class DrawingUpdate(AbstractEntity):
+class DrawingUpdate(AbstractEntityUpdate):
     name: Optional[str]
     parent_id: Optional[int]
     category: Optional[str]

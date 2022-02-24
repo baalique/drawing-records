@@ -2,14 +2,14 @@ from typing import Iterable, List, Optional
 
 from fastapi import APIRouter, Depends, HTTPException, status
 
-from app.adapters.repository import AbstractRepository
+from app.adapters.repository.protocols import Repository
 from app.db import app_db
 from app.domain.entities.registration import Registration, RegistrationCreate
 from app.domain.services import registration as registration_services
 
 router = APIRouter(prefix="/registration", tags=["registration"])
 
-registration_repo = app_db.repositories["Registration"]
+registration_repo = lambda: app_db.repositories["Registration"]
 
 
 @router.post(
@@ -20,7 +20,7 @@ registration_repo = app_db.repositories["Registration"]
 )
 async def create_registration(
     registration: RegistrationCreate,
-    db: AbstractRepository = Depends(registration_repo),
+    db: Repository = Depends(registration_repo),
 ) -> Registration:
     return await registration_services.create_registration(db.add, dto=registration)
 
@@ -32,7 +32,7 @@ async def create_registration(
     responses={200: {"description": "Items found"}},
 )
 async def get_all_registrations(
-    db: AbstractRepository = Depends(registration_repo),
+    db: Repository = Depends(registration_repo),
 ) -> Iterable[Registration]:
     return await registration_services.get_all_registrations(db.list)
 
@@ -47,7 +47,7 @@ async def get_all_registrations(
     },
 )
 async def get_registration(
-    id: int, db: AbstractRepository = Depends(registration_repo)
+    id: int, db: Repository = Depends(registration_repo)
 ) -> Optional[Registration]:
     registration = await registration_services.get_registration_by_id(db.get, id=id)
     if registration is None:

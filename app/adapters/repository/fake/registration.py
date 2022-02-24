@@ -3,15 +3,16 @@ from __future__ import annotations
 from typing import List, Optional
 
 from app.adapters.exceptions.exceptions import RelatedEntityNotExistsException
-from app.adapters.repository.fake import FakeBaseRepository, FakeSession
-from app.domain.entities import AbstractEntity
+from app.adapters.repository.fake import FakeSession
+from app.adapters.repository.protocols.entities import RegistrationRepository
 from app.domain.entities.registration import Registration, RegistrationCreate
 
 
-class FakeRegistrationRepository(FakeBaseRepository):
+class FakeRegistrationRepository(RegistrationRepository):
     def __init__(self, session: FakeSession):
-        super().__init__(session)
+        self.session = session
         self.session.register_repository("Registration", self)
+        self._pk_count = 1
 
     async def add(self, registration_create: RegistrationCreate) -> Registration:
         drawings = await self.session.get(
@@ -30,9 +31,13 @@ class FakeRegistrationRepository(FakeBaseRepository):
         self._pk_count += 1
         return await self.session.add(registration)
 
-    async def get(self, id: int) -> Optional[AbstractEntity]:
+    async def get(self, id: int) -> Optional[Registration]:
         registrations = await self.session.get("Registration", lambda d: d.id == id)
         return registrations[0] if registrations else None
 
-    async def list(self) -> List[AbstractEntity]:
+    async def list(self) -> List[Registration]:
         return await self.session.list("Registration")
+
+    async def clear(self) -> None:
+        self._pk_count = 1
+        await self.session.clear()
