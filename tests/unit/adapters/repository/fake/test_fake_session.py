@@ -26,7 +26,7 @@ class TestFakeSession:
     @pytest.mark.asyncio
     async def test_update_session_fails_wrong_type(self, fake_session):
         with pytest.raises(InvalidEntityException):
-            await fake_session.update("test data", None, None)
+            await fake_session.update("test data", None)
 
     @pytest.mark.unit
     @pytest.mark.asyncio

@@ -180,13 +180,6 @@ class TestFakeDrawingRepository:
         assert start_len == len(new_drawings)
 
     @pytest.mark.unit
-    def test_call_drawing_repository_returns_itself(
-        self, drawing_repository: Callable[[int], FakeDrawingRepository]
-    ):
-        drawing_repository = drawing_repository()
-        assert drawing_repository == drawing_repository()
-
-    @pytest.mark.unit
     @pytest.mark.asyncio
     async def test_truncate_database(
         self, drawing_repository: Callable[[int], FakeDrawingRepository]

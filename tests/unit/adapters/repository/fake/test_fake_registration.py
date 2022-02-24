@@ -97,11 +97,6 @@ class TestFakeRegistrationRepository:
         assert len(registrations) == nb_of_registrations
 
     @pytest.mark.unit
-    def test_call_registration_repository_returns_itself(self, registration_repository):
-        registration_repository = registration_repository()
-        assert registration_repository is registration_repository()
-
-    @pytest.mark.unit
     @pytest.mark.asyncio
     async def test_truncate_database(self, registration_repository):
         registration_repository = registration_repository()
