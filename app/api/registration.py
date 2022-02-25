@@ -2,10 +2,10 @@ from typing import Iterable, List, Optional
 
 from fastapi import APIRouter, Depends, HTTPException, status
 
-from app.adapters.repository.protocols import Repository
 from app.db import app_db
 from app.domain.entities.registration import Registration, RegistrationCreate
 from app.domain.services import registration as registration_services
+from app.infrastructure.adapters.repositories.protocols import Repository
 
 router = APIRouter(prefix="/registration", tags=["registration"])
 

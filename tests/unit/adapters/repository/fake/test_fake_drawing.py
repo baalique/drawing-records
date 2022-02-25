@@ -2,8 +2,8 @@ from typing import Callable, List
 
 import pytest
 
-from app.adapters.repository.fake.drawing import FakeDrawingRepository
 from app.domain.entities.drawing import DrawingCreate, DrawingUpdate
+from app.infrastructure.adapters.repositories.fake.drawing import FakeDrawingRepository
 
 
 class TestFakeDrawingRepository:

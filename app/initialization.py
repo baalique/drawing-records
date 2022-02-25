@@ -1,10 +1,10 @@
 from fastapi import FastAPI
 
 from app import api
-from app.adapters.repository import AbstractDatabase
 from app.application import Application
 from app.config import Settings
 from app.db import app_db
+from app.infrastructure.adapters.repositories import AbstractDatabase
 
 
 def init_database(settings: Settings) -> AbstractDatabase:

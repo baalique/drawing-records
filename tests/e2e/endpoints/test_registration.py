@@ -2,7 +2,9 @@ import pytest
 from fastapi import status
 from fastapi.encoders import jsonable_encoder
 
-from app.adapters.exceptions.exceptions import RelatedEntityNotExistsException
+from app.infrastructure.adapters.exceptions.exceptions import (
+    RelatedEntityNotExistsException,
+)
 
 
 class TestRegistrationAPI:

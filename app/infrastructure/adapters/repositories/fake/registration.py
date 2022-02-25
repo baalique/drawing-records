@@ -3,11 +3,15 @@ from __future__ import annotations
 from functools import partial
 from typing import List, Optional
 
-from app.adapters.exceptions.exceptions import RelatedEntityNotExistsException
-from app.adapters.repository import is_id_equals
-from app.adapters.repository.fake import FakeSession
-from app.adapters.repository.protocols.entities import RegistrationRepository
 from app.domain.entities.registration import Registration, RegistrationCreate
+from app.infrastructure.adapters.exceptions.exceptions import (
+    RelatedEntityNotExistsException,
+)
+from app.infrastructure.adapters.repositories import is_id_equals
+from app.infrastructure.adapters.repositories.fake import FakeSession
+from app.infrastructure.adapters.repositories.protocols.entities import (
+    RegistrationRepository,
+)
 
 
 class FakeRegistrationRepository(RegistrationRepository):

@@ -3,8 +3,8 @@ from typing import Callable, List
 import pytest
 from pytest_factoryboy import register
 
-from app.adapters.repository.fake import FakeDatabase
 from app.domain.entities.registration import Registration
+from app.infrastructure.adapters.repositories.fake import FakeDatabase
 from tests.factories.entities.drawing import (
     FactoryDrawing,
     FactoryDrawingCreate,

@@ -2,11 +2,13 @@ from typing import Callable
 
 import pytest
 
-from app.adapters.repository.fake import FakeSession
-from app.adapters.repository.fake.drawing import FakeDrawingRepository
-from app.adapters.repository.fake.registration import FakeRegistrationRepository
 from app.db import get_db
 from app.domain.entities.registration import RegistrationCreate
+from app.infrastructure.adapters.repositories.fake import FakeSession
+from app.infrastructure.adapters.repositories.fake.drawing import FakeDrawingRepository
+from app.infrastructure.adapters.repositories.fake.registration import (
+    FakeRegistrationRepository,
+)
 
 
 @pytest.fixture(name="fake_session")

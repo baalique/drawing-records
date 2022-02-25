@@ -1,6 +1,8 @@
 import pytest
 
-from app.adapters.exceptions.exceptions import RelatedEntityNotExistsException
+from app.infrastructure.adapters.exceptions.exceptions import (
+    RelatedEntityNotExistsException,
+)
 
 
 class TestFakeRegistrationRepository:

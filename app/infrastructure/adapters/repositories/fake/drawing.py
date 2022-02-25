@@ -3,10 +3,12 @@ from __future__ import annotations
 from functools import partial
 from typing import List, Optional
 
-from app.adapters.repository import is_id_equals
-from app.adapters.repository.fake import FakeSession
-from app.adapters.repository.protocols.entities import DrawingRepository
 from app.domain.entities.drawing import Drawing, DrawingCreate, DrawingUpdate
+from app.infrastructure.adapters.repositories import is_id_equals
+from app.infrastructure.adapters.repositories.fake import FakeSession
+from app.infrastructure.adapters.repositories.protocols.entities import (
+    DrawingRepository,
+)
 
 
 class FakeDrawingRepository(DrawingRepository):

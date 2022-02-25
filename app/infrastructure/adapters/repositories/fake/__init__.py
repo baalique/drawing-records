@@ -2,10 +2,10 @@ from __future__ import annotations
 
 from typing import Callable, Dict, List, TypeVar
 
-from app.adapters.exceptions.exceptions import InvalidEntityException
-from app.adapters.repository import AbstractDatabase, AbstractMetadata
-from app.adapters.repository.protocols import Repository, Session
 from app.domain.entities import AbstractEntity
+from app.infrastructure.adapters.exceptions.exceptions import InvalidEntityException
+from app.infrastructure.adapters.repositories import AbstractDatabase, AbstractMetadata
+from app.infrastructure.adapters.repositories.protocols import Repository, Session
 
 E = TypeVar("E", bound=AbstractEntity)
 
