@@ -2,8 +2,8 @@ from typing import Callable, List
 
 import pytest
 
-from app.domain.entities.drawing import DrawingCreate, DrawingUpdate
 from app.infrastructure.adapters.repositories.fake.drawing import FakeDrawingRepository
+from app.service_layer.dtos.drawing import DrawingDtoCreate, DrawingDtoUpdate
 
 
 class TestFakeDrawingRepository:
@@ -20,7 +20,7 @@ class TestFakeDrawingRepository:
     async def test_add_one_drawing(
         self,
         drawing_repository: Callable[[int], FakeDrawingRepository],
-        create_drawing_dto: DrawingCreate,
+        create_drawing_dto: DrawingDtoCreate,
     ):
         drawing_repository = drawing_repository()
         drawings = await drawing_repository.list()
@@ -36,7 +36,7 @@ class TestFakeDrawingRepository:
     async def test_add_one_drawing_increases_pk(
         self,
         drawing_repository: Callable[[int], FakeDrawingRepository],
-        create_drawing_dto: DrawingCreate,
+        create_drawing_dto: DrawingDtoCreate,
     ):
         drawing_repository = drawing_repository()
         drawings = await drawing_repository.list()
@@ -60,7 +60,7 @@ class TestFakeDrawingRepository:
     async def test_get_one_drawing(
         self,
         drawing_repository: Callable[[int], FakeDrawingRepository],
-        create_drawing_dto: DrawingCreate,
+        create_drawing_dto: DrawingDtoCreate,
     ):
         drawing_repository = drawing_repository()
         drawing = await drawing_repository.add(create_drawing_dto)
@@ -88,7 +88,7 @@ class TestFakeDrawingRepository:
     async def test_get_all_drawings(
         self,
         drawing_repository_empty: FakeDrawingRepository,
-        create_many_drawings_dto: Callable[[int], List[DrawingCreate]],
+        create_many_drawings_dto: Callable[[int], List[DrawingDtoCreate]],
         default_database_size: int,
     ):
         nb_of_drawings = default_database_size
@@ -106,7 +106,7 @@ class TestFakeDrawingRepository:
     async def test_update_drawing(
         self,
         drawing_repository: Callable[[int], FakeDrawingRepository],
-        update_drawing_dto: DrawingUpdate,
+        update_drawing_dto: DrawingDtoUpdate,
     ):
         drawing_repository = drawing_repository()
         drawings = await drawing_repository.list()
@@ -123,7 +123,7 @@ class TestFakeDrawingRepository:
     async def test_update_drawing_fails_no_such_id(
         self,
         drawing_repository: Callable[[int], FakeDrawingRepository],
-        update_drawing_dto: DrawingUpdate,
+        update_drawing_dto: DrawingDtoUpdate,
     ):
         drawing_repository = drawing_repository()
         drawings = await drawing_repository.list()

@@ -3,7 +3,7 @@ from typing import Dict
 from fastapi import APIRouter, status
 
 from app.config import get_current_app_settings
-from app.domain.entities.status import Status
+from app.service_layer.dtos.status import Status
 
 router = APIRouter(prefix="/health-check", tags=["health-check"])
 

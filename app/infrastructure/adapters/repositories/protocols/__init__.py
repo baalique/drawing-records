@@ -1,14 +1,10 @@
 from typing import Callable, Generic, Iterable, List, Optional, Protocol, TypeVar
 
-from app.domain.entities import (
-    AbstractEntity,
-    AbstractEntityCreate,
-    AbstractEntityUpdate,
-)
+from app.service_layer.dtos import AbstractDtoCreate, AbstractDtoOut, AbstractDtoUpdate
 
-E = TypeVar("E", bound=AbstractEntity)
-EC = TypeVar("EC", bound=AbstractEntityCreate)
-EU = TypeVar("EU", bound=AbstractEntityUpdate)
+E = TypeVar("E", bound=AbstractDtoOut)
+EC = TypeVar("EC", bound=AbstractDtoCreate)
+EU = TypeVar("EU", bound=AbstractDtoUpdate)
 
 
 class Session(Protocol):

@@ -3,8 +3,8 @@ from typing import Callable, List
 import pytest
 from pytest_factoryboy import register
 
-from app.domain.entities.registration import Registration
 from app.infrastructure.adapters.repositories.fake import FakeDatabase
+from app.service_layer.dtos.registration import RegistrationDtoOut
 from tests.factories.entities.drawing import (
     FactoryDrawing,
     FactoryDrawingCreate,
@@ -84,7 +84,7 @@ def default_database_size_fixture():
 
 @pytest.fixture(name="fill_database")
 def fill_database_fixture(
-    registrations: Callable[[int], List[Registration]], default_database_size: int
+    registrations: Callable[[int], List[RegistrationDtoOut]], default_database_size: int
 ) -> Callable[[FakeDatabase], FakeDatabase]:
     regs = registrations
 

@@ -1,42 +1,26 @@
 from __future__ import annotations
 
-from pathlib import Path
 from typing import Optional
 
-from app.domain.entities import (
-    AbstractEntity,
-    AbstractEntityCreate,
-    AbstractEntityUpdate,
-)
+from app.domain.entities import AbstractEntity
 
 
 class Drawing(AbstractEntity):
-    id: int
-    name: str
-    parent: Optional[Drawing]
-    category: str
-    project: str
-    drawing_data: dict
-    path_to_file: Path
-
-    class Config:
-        orm_mode = True
-        validate_assignment = True
-
-
-class DrawingCreate(AbstractEntityCreate):
-    name: str
-    parent_id: Optional[int]
-    category: str
-    project: str
-    drawing_data: dict
-    path_to_file: Path
-
-
-class DrawingUpdate(AbstractEntityUpdate):
-    name: Optional[str]
-    parent_id: Optional[int]
-    category: Optional[str]
-    project: Optional[str]
-    drawing_data: Optional[dict]
-    path_to_file: Optional[Path]
+    def __init__(
+        self,
+        id: int,
+        name: str,
+        parent: Optional[Drawing],
+        category: str,
+        project: str,
+        drawing_data: dict,
+        path_to_file: str,
+    ):
+        self.id = id
+        self.name = name
+        self.parent = parent
+        self.parent_id = None if parent is None else parent.id
+        self.category = category
+        self.project = project
+        self.drawing_data = drawing_data
+        self.path_to_file = path_to_file

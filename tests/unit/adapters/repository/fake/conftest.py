@@ -3,12 +3,12 @@ from typing import Callable
 import pytest
 
 from app.db import get_db
-from app.domain.entities.registration import RegistrationCreate
 from app.infrastructure.adapters.repositories.fake import FakeSession
 from app.infrastructure.adapters.repositories.fake.drawing import FakeDrawingRepository
 from app.infrastructure.adapters.repositories.fake.registration import (
     FakeRegistrationRepository,
 )
+from app.service_layer.dtos.registration import RegistrationCreate
 
 
 @pytest.fixture(name="fake_session")
@@ -51,7 +51,7 @@ def registration_repository_fixture(
         all_registrations = registrations(amount)
         registration_repository = get_db().repositories["Registration"]
 
-        drawings = [r.drawing for r in all_registrations]
+        drawings = [r.drawing_table for r in all_registrations]
 
         registration_repository.session.data["Registration"] = all_registrations
         registration_repository.session.data["Drawing"] = drawings

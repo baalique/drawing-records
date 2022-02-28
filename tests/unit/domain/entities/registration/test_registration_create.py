@@ -3,7 +3,7 @@ from copy import deepcopy
 import pytest
 from pydantic import ValidationError
 
-from app.domain.entities.registration import RegistrationCreate
+from app.service_layer.dtos.registration import RegistrationCreate
 
 
 @pytest.mark.unit

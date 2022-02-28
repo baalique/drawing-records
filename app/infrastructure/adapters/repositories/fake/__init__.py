@@ -2,12 +2,12 @@ from __future__ import annotations
 
 from typing import Callable, Dict, List, TypeVar
 
-from app.domain.entities import AbstractEntity
 from app.infrastructure.adapters.exceptions.exceptions import InvalidEntityException
 from app.infrastructure.adapters.repositories import AbstractDatabase, AbstractMetadata
 from app.infrastructure.adapters.repositories.protocols import Repository, Session
+from app.service_layer.dtos import AbstractDtoOut
 
-E = TypeVar("E", bound=AbstractEntity)
+E = TypeVar("E", bound=AbstractDtoOut)
 
 
 class FakeSession(Session):

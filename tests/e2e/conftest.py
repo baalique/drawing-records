@@ -4,8 +4,8 @@ import pytest
 from fastapi.testclient import TestClient
 
 from app.config import get_initial_app_settings
-from app.domain.entities import AbstractEntity
 from app.initialization import init_app
+from app.service_layer.dtos import AbstractDtoOut
 from tests.utils import clear_database
 
 
@@ -39,6 +39,6 @@ def test_client_and_data_fixture(app, app_settings, fill_database):
 
 
 @pytest.fixture(name="test_data")
-def test_data_fixture(test_client_and_data) -> Dict[str, List[AbstractEntity]]:
+def test_data_fixture(test_client_and_data) -> Dict[str, List[AbstractDtoOut]]:
     _, data = test_client_and_data
     return data

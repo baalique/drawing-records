@@ -3,7 +3,6 @@ from __future__ import annotations
 from functools import partial
 from typing import List, Optional
 
-from app.domain.entities.registration import Registration, RegistrationCreate
 from app.infrastructure.adapters.exceptions.exceptions import (
     RelatedEntityNotExistsException,
 )
@@ -12,6 +11,7 @@ from app.infrastructure.adapters.repositories.fake import FakeSession
 from app.infrastructure.adapters.repositories.protocols.entities import (
     RegistrationRepository,
 )
+from app.service_layer.dtos.registration import RegistrationCreate, RegistrationDtoOut
 
 
 class FakeRegistrationRepository(RegistrationRepository):
@@ -20,7 +20,7 @@ class FakeRegistrationRepository(RegistrationRepository):
         self.session.register_repository("Registration", self)
         self._pk_count = 1
 
-    async def add(self, registration_create: RegistrationCreate) -> Registration:
+    async def add(self, registration_create: RegistrationCreate) -> RegistrationDtoOut:
         drawings = await self.session.get(
             "Drawing",
             predicate=partial(is_id_equals, to=registration_create.drawing_id),
@@ -30,7 +30,7 @@ class FakeRegistrationRepository(RegistrationRepository):
                 f"Cannot find drawing with id={registration_create.drawing_id}"
             )
 
-        registration = Registration(
+        registration = RegistrationDtoOut(
             id=self._pk_count,
             drawing=drawings[0],
             created_at=registration_create.created_at,
@@ -38,13 +38,13 @@ class FakeRegistrationRepository(RegistrationRepository):
         self._pk_count += 1
         return await self.session.add(registration)
 
-    async def get(self, id: int) -> Optional[Registration]:
+    async def get(self, id: int) -> Optional[RegistrationDtoOut]:
         registrations = await self.session.get(
             "Registration", predicate=partial(is_id_equals, to=id)
         )
         return registrations[0] if registrations else None
 
-    async def list(self) -> List[Registration]:
+    async def list(self) -> List[RegistrationDtoOut]:
         return await self.session.list("Registration")
 
     async def clear(self) -> None:

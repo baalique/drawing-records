@@ -1,6 +1,10 @@
 from factory import Factory, Faker
 
-from app.domain.entities.drawing import Drawing, DrawingCreate, DrawingUpdate
+from app.service_layer.dtos.drawing import (
+    DrawingDtoCreate,
+    DrawingDtoOut,
+    DrawingDtoUpdate,
+)
 
 
 class FactoryDrawing(Factory):
@@ -13,7 +17,7 @@ class FactoryDrawing(Factory):
     path_to_file = Faker("file_path")
 
     class Meta:
-        model = Drawing
+        model = DrawingDtoOut
 
 
 class FactoryDrawingCreate(Factory):
@@ -25,7 +29,7 @@ class FactoryDrawingCreate(Factory):
     path_to_file = Faker("file_path")
 
     class Meta:
-        model = DrawingCreate
+        model = DrawingDtoCreate
 
 
 class FactoryDrawingUpdate(Factory):
@@ -37,4 +41,4 @@ class FactoryDrawingUpdate(Factory):
     path_to_file = Faker("file_path")
 
     class Meta:
-        model = DrawingUpdate
+        model = DrawingDtoUpdate

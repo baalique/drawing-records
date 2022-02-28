@@ -3,14 +3,14 @@ from typing import Any, Dict
 
 import pytest
 
-from app.domain.entities.drawing import Drawing
+from app.service_layer.dtos.drawing import DrawingDtoOut
 
 
 @pytest.fixture(name="valid_registration_dict")
 def valid_registration_dict_fixture(valid_drawing_dict) -> Dict[str, Any]:
     return {
         "id": 1,
-        "drawing": Drawing(**valid_drawing_dict),
+        "drawing": DrawingDtoOut(**valid_drawing_dict),
         "created_at": datetime(year=2022, month=1, day=1, hour=1),
     }
 
