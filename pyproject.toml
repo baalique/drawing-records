@@ -30,6 +30,9 @@ isort = "^5.10.1"
 flake8-isort = "^4.1.1"
 flake8-annotations = "^2.7.0"
 mypy = "^0.931"
+SQLAlchemy = {version = "1.4.31", extras = ["mypy"]}
+asyncpg = "^0.25.0"
+sqlalchemy-stubs = "^0.4"
 
 [tool.poetry.dev-dependencies]
 
@@ -92,3 +95,6 @@ flake8-pytest-style = [
 flake8-bugbear = [
     "-B008", # B008 Do not perform function calls in argument defaults.
 ]
+
+[tool.mypy]
+plugins = ["sqlmypy"]
