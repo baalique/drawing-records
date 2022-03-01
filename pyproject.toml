@@ -91,7 +91,7 @@ flake8-pytest-style = [
     "-PT023", # PT023 use @pytest.mark.{mark_name}{expected_parens} over @pytest.mark.{mark_name}{actual_parens}
 ]
 
-[tool.flakeheaven.exceptions."app/api/"]
+[tool.flakeheaven.exceptions."app/"]
 flake8-bugbear = [
     "-B008", # B008 Do not perform function calls in argument defaults.
 ]
