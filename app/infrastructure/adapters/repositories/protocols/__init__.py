@@ -1,8 +1,9 @@
 from typing import Callable, Generic, Iterable, List, Optional, Protocol, TypeVar
 
-from app.service_layer.dtos import AbstractDtoCreate, AbstractDtoOut, AbstractDtoUpdate
+from app.domain.entities import AbstractEntity
+from app.service_layer.dtos import AbstractDtoCreate, AbstractDtoUpdate
 
-E = TypeVar("E", bound=AbstractDtoOut)
+E = TypeVar("E", bound=AbstractEntity)
 EC = TypeVar("EC", bound=AbstractDtoCreate)
 EU = TypeVar("EU", bound=AbstractDtoUpdate)
 
@@ -27,7 +28,7 @@ class Session(Protocol):
 
 
 class Repository(Generic[E, EC]):
-    async def add(self, entity: EC) -> E:
+    async def add(self, entity: E) -> Optional[E]:
         ...
 
     async def get(self, id: int) -> Optional[E]:
