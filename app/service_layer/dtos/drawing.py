@@ -3,20 +3,12 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Optional
 
+from app.domain.entities.drawing import Drawing
 from app.service_layer.dtos import AbstractDtoCreate, AbstractDtoOut, AbstractDtoUpdate
 
 
 class DrawingDtoOut(AbstractDtoOut):
     id: int
-    name: str
-    parent: Optional[DrawingDtoOut]
-    category: str
-    project: str
-    drawing_data: dict
-    path_to_file: Path
-
-
-class DrawingDtoCreate(AbstractDtoCreate):
     name: str
     parent_id: Optional[int]
     category: str
@@ -24,8 +16,42 @@ class DrawingDtoCreate(AbstractDtoCreate):
     drawing_data: dict
     path_to_file: Path
 
+    @staticmethod
+    def from_entity(drawing: Drawing) -> DrawingDtoOut:
+        return DrawingDtoOut(
+            id=drawing.id,
+            name=drawing.name,
+            parent_id=drawing.parent_id,
+            category=drawing.category,
+            project=drawing.project,
+            drawing_data=drawing.drawing_data,
+            path_to_file=drawing.path_to_file,
+        )
+
+
+class DrawingDtoCreate(AbstractDtoCreate):
+    id: int
+    name: str
+    parent_id: Optional[int]
+    category: str
+    project: str
+    drawing_data: dict
+    path_to_file: Path
+
+    def to_entity(self, parent: Optional[Drawing]) -> Drawing:
+        return Drawing(
+            id=self.id,
+            name=self.name,
+            parent=parent,
+            category=self.category,
+            project=self.project,
+            drawing_data=self.drawing_data,
+            path_to_file=str(self.path_to_file),
+        )
+
 
 class DrawingDtoUpdate(AbstractDtoUpdate):
+    id: Optional[int]
     name: Optional[str]
     parent_id: Optional[int]
     category: Optional[str]
