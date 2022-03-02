@@ -1,8 +1,6 @@
 import pytest
 
-from app.infrastructure.adapters.exceptions.exceptions import (
-    RelatedEntityNotExistsException,
-)
+from tests.fake.exceptions import FakeRelatedEntityNotExistsError
 
 
 class TestFakeRegistrationRepository:
@@ -56,7 +54,7 @@ class TestFakeRegistrationRepository:
         registration_create = create_registration_dto
         registration_create.drawing_id = max_drawing_id + 1
 
-        with pytest.raises(RelatedEntityNotExistsException):
+        with pytest.raises(FakeRelatedEntityNotExistsError):
             await registration_repository.add(registration_create)
 
     @pytest.mark.unit

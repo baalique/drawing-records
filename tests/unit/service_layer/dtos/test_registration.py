@@ -2,7 +2,11 @@ from copy import deepcopy
 
 import pytest
 from pydantic import ValidationError
-from service_layer.dtos.registration import RegistrationDtoCreate, RegistrationDtoOut
+
+from app.service_layer.dtos.registration import (
+    RegistrationDtoCreate,
+    RegistrationDtoOut,
+)
 
 
 @pytest.mark.unit

@@ -2,7 +2,8 @@ from datetime import datetime
 from typing import Any, Dict
 
 import pytest
-from service_layer.dtos.drawing import DrawingDtoOut
+
+from app.service_layer.dtos.drawing import DrawingDtoOut
 
 
 @pytest.fixture(name="valid_drawing_dto_out_dict")
