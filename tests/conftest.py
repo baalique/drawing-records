@@ -3,7 +3,6 @@ from typing import Callable, List
 import pytest
 from pytest_factoryboy import register
 
-from app.infrastructure.adapters.repositories.fake import FakeDatabase
 from app.service_layer.dtos.registration import RegistrationDtoOut
 from tests.factories.entities.drawing import (
     FactoryDrawing,
@@ -14,6 +13,7 @@ from tests.factories.entities.registration import (
     FactoryRegistration,
     FactoryRegistrationCreate,
 )
+from tests.fake.repositories import FakeDatabase
 from tests.utils import make_many
 
 for factory in (

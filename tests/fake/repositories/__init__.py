@@ -1,13 +1,39 @@
 from __future__ import annotations
 
-from typing import Callable, Dict, List, TypeVar
+import abc
+from typing import Callable, Dict, List, Protocol, TypeVar
 
 from app.infrastructure.adapters.exceptions.exceptions import InvalidEntityException
-from app.infrastructure.adapters.repositories import AbstractDatabase, AbstractMetadata
-from app.infrastructure.adapters.repositories.protocols import Repository, Session
+from app.infrastructure.adapters.repositories.protocols import Repository
 from app.service_layer.dtos import AbstractDtoOut
 
+
+class AbstractDatabase(abc.ABC):
+    @abc.abstractmethod
+    async def truncate_database(self) -> None:
+        raise NotImplementedError
+
+
 E = TypeVar("E", bound=AbstractDtoOut)
+
+
+class Session(Protocol):
+    async def add(self, entity: E) -> E:
+        ...
+
+    async def get(self, model: str, predicate: Callable[[E], bool]) -> List[E]:
+        ...
+
+    async def list(self, model: str) -> List[E]:
+        ...
+
+    async def update(
+        self, model: str, predicate: Callable[[E], bool], **kwargs
+    ) -> List[E]:
+        ...
+
+    async def delete(self, model: str, predicate: Callable[[E], bool]) -> bool:
+        ...
 
 
 class FakeSession(Session):
@@ -75,13 +101,8 @@ class FakeSession(Session):
         pass
 
 
-class FakeMetadata(AbstractMetadata):
-    pass
-
-
 class FakeDatabase(AbstractDatabase):
-    def __init__(self, metadata: AbstractMetadata, repositories: Dict[str, Repository]):
-        self.metadata = metadata
+    def __init__(self, repositories: Dict[str, Repository]):
         self.repositories = repositories
 
     async def truncate_database(self) -> None:

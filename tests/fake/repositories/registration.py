@@ -7,11 +7,14 @@ from app.infrastructure.adapters.exceptions.exceptions import (
     RelatedEntityNotExistsException,
 )
 from app.infrastructure.adapters.repositories import is_id_equals
-from app.infrastructure.adapters.repositories.fake import FakeSession
 from app.infrastructure.adapters.repositories.protocols.entities import (
     RegistrationRepository,
 )
-from app.service_layer.dtos.registration import RegistrationCreate, RegistrationDtoOut
+from app.service_layer.dtos.registration import (
+    RegistrationDtoCreate,
+    RegistrationDtoOut,
+)
+from tests.fake.repositories import FakeSession
 
 
 class FakeRegistrationRepository(RegistrationRepository):
@@ -20,7 +23,9 @@ class FakeRegistrationRepository(RegistrationRepository):
         self.session.register_repository("Registration", self)
         self._pk_count = 1
 
-    async def add(self, registration_create: RegistrationCreate) -> RegistrationDtoOut:
+    async def add(
+        self, registration_create: RegistrationDtoCreate
+    ) -> RegistrationDtoOut:
         drawings = await self.session.get(
             "Drawing",
             predicate=partial(is_id_equals, to=registration_create.drawing_id),

@@ -4,7 +4,6 @@ from functools import partial
 from typing import List, Optional
 
 from app.infrastructure.adapters.repositories import is_id_equals
-from app.infrastructure.adapters.repositories.fake import FakeSession
 from app.infrastructure.adapters.repositories.protocols.entities import (
     DrawingRepository,
 )
@@ -13,6 +12,7 @@ from app.service_layer.dtos.drawing import (
     DrawingDtoOut,
     DrawingDtoUpdate,
 )
+from tests.fake.repositories import FakeSession
 
 
 class FakeDrawingRepository(DrawingRepository):

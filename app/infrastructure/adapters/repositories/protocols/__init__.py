@@ -1,4 +1,4 @@
-from typing import Callable, Generic, Iterable, List, Optional, Protocol, TypeVar
+from typing import Generic, Iterable, Optional, TypeVar
 
 from app.domain.entities import AbstractEntity
 from app.service_layer.dtos import AbstractDtoCreate, AbstractDtoUpdate
@@ -6,25 +6,6 @@ from app.service_layer.dtos import AbstractDtoCreate, AbstractDtoUpdate
 E = TypeVar("E", bound=AbstractEntity)
 EC = TypeVar("EC", bound=AbstractDtoCreate)
 EU = TypeVar("EU", bound=AbstractDtoUpdate)
-
-
-class Session(Protocol):
-    async def add(self, entity: E) -> E:
-        ...
-
-    async def get(self, model: str, predicate: Callable[[E], bool]) -> List[E]:
-        ...
-
-    async def list(self, model: str) -> List[E]:
-        ...
-
-    async def update(
-        self, model: str, predicate: Callable[[E], bool], **kwargs
-    ) -> List[E]:
-        ...
-
-    async def delete(self, model: str, predicate: Callable[[E], bool]) -> bool:
-        ...
 
 
 class Repository(Generic[E, EC]):
