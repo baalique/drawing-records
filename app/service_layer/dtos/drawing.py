@@ -3,6 +3,8 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Optional
 
+from pydantic import Field
+
 from app.domain.entities.drawing import Drawing
 from app.service_layer.dtos import AbstractDtoCreate, AbstractDtoOut, AbstractDtoUpdate
 
@@ -10,7 +12,7 @@ from app.service_layer.dtos import AbstractDtoCreate, AbstractDtoOut, AbstractDt
 class DrawingDtoOut(AbstractDtoOut):
     id: int
     name: str
-    parent_id: Optional[int]
+    parent_id: Optional[int] = Field(...)
     category: str
     project: str
     drawing_data: dict
@@ -32,7 +34,7 @@ class DrawingDtoOut(AbstractDtoOut):
 class DrawingDtoCreate(AbstractDtoCreate):
     id: int
     name: str
-    parent_id: Optional[int]
+    parent_id: Optional[int] = Field(...)
     category: str
     project: str
     drawing_data: dict
