@@ -1,27 +1,26 @@
-from typing import Callable, List
-
 import pytest
 from pytest_factoryboy import register
 
-from app.service_layer.dtos.registration import RegistrationDtoOut
-from tests.factories.entities.drawing import (
-    FactoryDrawing,
-    FactoryDrawingCreate,
-    FactoryDrawingUpdate,
+from tests.factories.dtos.drawing import (
+    FactoryDrawingDtoCreate,
+    FactoryDrawingDtoOut,
+    FactoryDrawingDtoUpdate,
 )
-from tests.factories.entities.registration import (
-    FactoryRegistration,
-    FactoryRegistrationCreate,
+from tests.factories.dtos.registration import (
+    FactoryRegistrationDtoCreate,
+    FactoryRegistrationDtoOut,
 )
+from tests.factories.entities.drawing import FactoryDrawing
 from tests.fake.repositories import FakeDatabase
 from tests.utils import make_many
 
 for factory in (
     FactoryDrawing,
-    FactoryDrawingCreate,
-    FactoryDrawingUpdate,
-    FactoryRegistration,
-    FactoryRegistrationCreate,
+    FactoryDrawingDtoCreate,
+    FactoryDrawingDtoOut,
+    FactoryDrawingDtoUpdate,
+    FactoryRegistrationDtoCreate,
+    FactoryRegistrationDtoOut,
 ):
     register(factory)
 
@@ -36,44 +35,58 @@ def drawings_fixture(factory_drawing, default_database_size):
     return lambda amount=default_database_size: make_many(factory_drawing, amount)
 
 
-@pytest.fixture(name="create_drawing_dto")
-def create_drawing_dto_fixture(factory_drawing_create):
-    return factory_drawing_create()
+@pytest.fixture(name="drawing_dto_out")
+def drawing_dto_out_fixture(factory_drawing_dto_out):
+    return factory_drawing_dto_out()
 
 
-@pytest.fixture(name="create_many_drawings_dto")
-def create_many_drawings_dto_fixture(factory_drawing_create, default_database_size):
+@pytest.fixture(name="drawings_dto_out")
+def drawings_dto_out_fixture(factory_drawing_dto_out, default_database_size):
     return lambda amount=default_database_size: make_many(
-        factory_drawing_create, amount
+        factory_drawing_dto_out, amount
     )
 
 
-@pytest.fixture(name="update_drawing_dto")
-def update_drawing_dto_fixture(factory_drawing_update):
-    return factory_drawing_update()
+@pytest.fixture(name="drawing_dto_create")
+def drawing_dto_create_fixture(factory_drawing_dto_create):
+    return factory_drawing_dto_create()
 
 
-@pytest.fixture(name="registration")
-def registration_fixture(factory_registration):
-    return factory_registration()
+@pytest.fixture(name="drawings_dto_create")
+def drawings_dto_create_fixture(factory_drawing_dto_create, default_database_size):
+    return lambda amount=default_database_size: make_many(
+        factory_drawing_dto_create, amount
+    )
 
 
-@pytest.fixture(name="registrations")
-def registrations_fixture(factory_registration, default_database_size):
-    return lambda amount=default_database_size: make_many(factory_registration, amount)
+@pytest.fixture(name="drawing_dto_update")
+def drawing_dto_update_fixture(factory_drawing_dto_update):
+    return factory_drawing_dto_update()
 
 
-@pytest.fixture(name="create_registration_dto")
-def create_registration_dto_fixture(factory_registration_create):
-    return factory_registration_create()
+@pytest.fixture(name="registration_dto_out")
+def registration_dto_out_fixture(factory_registration_dto_out):
+    return factory_registration_dto_out()
 
 
-@pytest.fixture(name="create_many_registrations_dto")
-def create_many_registrations_dto_fixture(
-    factory_registration_create, default_database_size
+@pytest.fixture(name="registrations_dto_out")
+def registrations_dto_out_fixture(factory_registration_dto_out, default_database_size):
+    return lambda amount=default_database_size: make_many(
+        factory_registration_dto_out, amount
+    )
+
+
+@pytest.fixture(name="registration_dto_create")
+def registration_dto_create_fixture(factory_registration_dto_create):
+    return factory_registration_dto_create()
+
+
+@pytest.fixture(name="registrations_dto_create")
+def registrations_dto_create_fixture(
+    factory_registration_dto_create, default_database_size
 ):
     return lambda amount=default_database_size: make_many(
-        factory_registration_create, amount
+        factory_registration_dto_create, amount
     )
 
 
@@ -83,9 +96,7 @@ def default_database_size_fixture():
 
 
 @pytest.fixture(name="fill_database")
-def fill_database_fixture(
-    registrations: Callable[[int], List[RegistrationDtoOut]], default_database_size: int
-) -> Callable[[FakeDatabase], FakeDatabase]:
+def fill_database_fixture(registrations, default_database_size: int):
     regs = registrations
 
     def get_db(db: FakeDatabase):

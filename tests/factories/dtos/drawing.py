@@ -10,7 +10,7 @@ from app.service_layer.dtos.drawing import (
 class FactoryDrawingDtoOut(Factory):
     id = Faker("pyint", min_value=1)
     name = Faker("pystr", min_chars=1, max_chars=255)
-    parent_id = Faker("pyint", min_value=1)
+    parent_id = None
     category = Faker("pystr", min_chars=1, max_chars=255)
     project = Faker("pystr", min_chars=1, max_chars=255)
     drawing_data = Faker("pydict")
@@ -21,8 +21,9 @@ class FactoryDrawingDtoOut(Factory):
 
 
 class FactoryDrawingDtoCreate(Factory):
+    id = Faker("pyint", min_value=1)
     name = Faker("pystr", min_chars=1, max_chars=255)
-    parent_id = Faker("pyint", min_value=1)
+    parent_id = None
     category = Faker("pystr", min_chars=1, max_chars=255)
     project = Faker("pystr", min_chars=1, max_chars=255)
     drawing_data = Faker("pydict")
@@ -33,8 +34,9 @@ class FactoryDrawingDtoCreate(Factory):
 
 
 class FactoryDrawingDtoUpdate(Factory):
+    id = Faker("pyint", min_value=1)
     name = Faker("pystr", min_chars=1, max_chars=255)
-    parent_id = Faker("pyint", min_value=1)
+    parent_id = None
     category = Faker("pystr", min_chars=1, max_chars=255)
     project = Faker("pystr", min_chars=1, max_chars=255)
     drawing_data = Faker("pydict")
