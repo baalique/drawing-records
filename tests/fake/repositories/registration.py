@@ -3,9 +3,6 @@ from __future__ import annotations
 from functools import partial
 from typing import List, Optional
 
-from app.infrastructure.adapters.exceptions.exceptions import (
-    RelatedEntityNotExistsException,
-)
 from app.infrastructure.adapters.repositories import is_id_equals
 from app.infrastructure.adapters.repositories.protocols.entities import (
     RegistrationRepository,
@@ -14,6 +11,7 @@ from app.service_layer.dtos.registration import (
     RegistrationDtoCreate,
     RegistrationDtoOut,
 )
+from tests.fake.exceptions import FakeRelatedEntityNotExistsError
 from tests.fake.repositories import FakeSession
 
 
@@ -31,7 +29,7 @@ class FakeRegistrationRepository(RegistrationRepository):
             predicate=partial(is_id_equals, to=registration_create.drawing_id),
         )
         if not drawings:
-            raise RelatedEntityNotExistsException(
+            raise FakeRelatedEntityNotExistsError(
                 f"Cannot find drawing with id={registration_create.drawing_id}"
             )
 

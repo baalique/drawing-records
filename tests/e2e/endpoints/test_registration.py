@@ -1,10 +1,7 @@
 import pytest
+from fake.exceptions import FakeRelatedEntityNotExistsError
 from fastapi import status
 from fastapi.encoders import jsonable_encoder
-
-from app.infrastructure.adapters.exceptions.exceptions import (
-    RelatedEntityNotExistsException,
-)
 
 
 class TestRegistrationAPI:
@@ -34,7 +31,7 @@ class TestRegistrationAPI:
         self, test_client, test_data, create_registration_dto
     ):
         with test_client:
-            with pytest.raises(RelatedEntityNotExistsException):
+            with pytest.raises(FakeRelatedEntityNotExistsError):
                 test_client.post(
                     "registration/new",
                     json=jsonable_encoder(create_registration_dto) | {"drawing_id": 1},
