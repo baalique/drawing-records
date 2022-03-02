@@ -2,12 +2,15 @@ from pydantic import BaseModel
 
 
 class AbstractDtoOut(BaseModel):
-    pass
+    class Config:
+        validate_assignment = True
 
 
 class AbstractDtoCreate(BaseModel):
-    pass
+    class Config:
+        validate_assignment = True
 
 
 class AbstractDtoUpdate(BaseModel):
-    pass
+    class Config:
+        validate_assignment = True
