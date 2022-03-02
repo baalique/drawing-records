@@ -3,9 +3,9 @@ from __future__ import annotations
 import abc
 from typing import Callable, Dict, List, Protocol, TypeVar
 
-from app.infrastructure.adapters.exceptions.exceptions import InvalidEntityException
+from app.domain.entities import AbstractEntity
 from app.infrastructure.adapters.repositories.protocols import Repository
-from app.service_layer.dtos import AbstractDtoOut
+from tests.fake.exceptions import FakeInvalidEntityError
 
 
 class AbstractDatabase(abc.ABC):
@@ -14,7 +14,7 @@ class AbstractDatabase(abc.ABC):
         raise NotImplementedError
 
 
-E = TypeVar("E", bound=AbstractDtoOut)
+E = TypeVar("E", bound=AbstractEntity)
 
 
 class Session(Protocol):
@@ -48,42 +48,42 @@ class FakeSession(Session):
     async def add(self, entity: E) -> E:
         type_ = type(entity)
         if not self._has_model(type_.__name__):
-            raise InvalidEntityException(f"Cannot add entity with type {type_}")
+            raise FakeInvalidEntityError(f"Cannot add entity with type {type_}")
         self.data[type_.__name__].append(entity)
         return entity
 
     async def get(self, model: str, predicate: Callable[[E], bool]) -> List[E]:
         if not self._has_model(model):
-            raise InvalidEntityException(f"Cannot get entity with type {model}")
+            raise FakeInvalidEntityError(f"Cannot get entity with type {model}")
 
         return list(filter(predicate, self.data[model]))
 
     async def list(self, model: str) -> List[E]:
         if not self._has_model(model):
-            raise InvalidEntityException(f"Cannot get entities with type {model}")
+            raise FakeInvalidEntityError(f"Cannot get entities with type {model}")
         return self.data[model]
 
     async def update(
         self, model: str, predicate: Callable[[E], bool], **kwargs
     ) -> List[E]:
         if not self._has_model(model):
-            raise InvalidEntityException(f"Cannot update entities with type {model}")
+            raise FakeInvalidEntityError(f"Cannot update entities with type {model}")
 
         res = []
 
         data: List[E] = self.data[model]
 
-        for idx, e in enumerate(data):
+        for e in data:
             if predicate(e):
-                updated_entity = e.copy(update=kwargs)
-                self.data[model][idx] = updated_entity
-                res.append(updated_entity)
+                for k, v in kwargs.items():
+                    setattr(e, k, v)
+                res.append(e)
 
         return res
 
     async def delete(self, model: str, predicate: Callable[[E], bool]) -> bool:
         if not self._has_model(model):
-            raise InvalidEntityException(f"Cannot delete entities with type {model}")
+            raise FakeInvalidEntityError(f"Cannot delete entities with type {model}")
 
         start_len = len(self.data[model])
 
