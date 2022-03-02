@@ -13,7 +13,7 @@ from app.service_layer.exceptions import AlreadyExistsError, NotFoundError
 
 async def create_drawing(
     drawing_create: DrawingDtoCreate, repo: DrawingRepository
-) -> Optional[DrawingDtoOut]:
+) -> DrawingDtoOut:
     exists = await id_exists(drawing_create.id, repo)
     if exists:
         raise AlreadyExistsError(f"Drawing with id {drawing_create.id} already exists")
@@ -27,8 +27,6 @@ async def create_drawing(
 
     drawing = drawing_create.to_entity(parent)
     result = await repo.add(drawing)
-    if not result:
-        return
     dto_out = DrawingDtoOut.from_entity(result)
     return dto_out
 
@@ -38,7 +36,7 @@ async def get_drawing_by_id(
 ) -> Optional[DrawingDtoOut]:
     result = await repo.get(id)
     if not result:
-        return
+        return None
     return DrawingDtoOut.from_entity(result)
 
 
@@ -49,7 +47,7 @@ async def get_all_drawings(repo: DrawingRepository) -> List[DrawingDtoOut]:
 
 async def update_drawing(
     id: int, drawing_update: DrawingDtoUpdate, repo: DrawingRepository
-) -> Optional[DrawingDtoOut]:
+) -> DrawingDtoOut:
     exists = await id_exists(id, repo)
     if not exists:
         raise NotFoundError(f"Drawing with id {drawing_update.parent_id} not found")
@@ -73,6 +71,8 @@ async def delete_drawing(id: int, repo: DrawingRepository) -> bool:
     return result
 
 
-async def id_exists(id: int, repo: DrawingRepository) -> bool:
+async def id_exists(id: Optional[int], repo: DrawingRepository) -> bool:
+    if not id:
+        return False
     all_drawings = await get_all_drawings(repo)
     return id in (d.id for d in all_drawings)

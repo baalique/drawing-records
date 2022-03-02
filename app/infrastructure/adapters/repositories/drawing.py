@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List
 
 from fastapi import Depends
 from sqlalchemy import delete, select, update
@@ -16,13 +16,13 @@ class SQLAlchemyDrawingRepository(DrawingRepository):
     def __init__(self, session: AsyncSession = Depends(get_db)):
         self.session = session
 
-    async def add(self, drawing: Drawing) -> Optional[Drawing]:
+    async def add(self, drawing: Drawing) -> Drawing:
         async with self.session:
             self.session.add(drawing)
             await self.session.commit()
             return drawing
 
-    async def get(self, id: int) -> Optional[Drawing]:
+    async def get(self, id: int) -> Drawing:
         async with self.session:
             result = await self.session.execute(select(Drawing).where(Drawing.id == id))
             drawing = result.scalar()
@@ -32,9 +32,7 @@ class SQLAlchemyDrawingRepository(DrawingRepository):
         result = await self.session.execute(select(Drawing).order_by(Drawing.id))
         return result.scalars()
 
-    async def update(
-        self, drawing_update: DrawingDtoUpdate, id: int
-    ) -> Optional[Drawing]:
+    async def update(self, drawing_update: DrawingDtoUpdate, id: int) -> Drawing:
         dict_to_update = {
             k: v for k, v in drawing_update.dict().items() if v is not None
         }

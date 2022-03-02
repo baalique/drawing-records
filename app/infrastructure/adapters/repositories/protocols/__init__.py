@@ -9,7 +9,7 @@ EU = TypeVar("EU", bound=AbstractDtoUpdate)
 
 
 class Repository(Generic[E, EC]):
-    async def add(self, entity: E) -> Optional[E]:
+    async def add(self, entity: E) -> E:
         ...
 
     async def get(self, id: int) -> Optional[E]:
@@ -23,7 +23,7 @@ class Repository(Generic[E, EC]):
 
 
 class WriteableRepository(Repository, Generic[E, EC, EU]):
-    async def update(self, entity: EU, id: int) -> Optional[E]:
+    async def update(self, entity: EU, id: int) -> E:
         ...
 
     async def delete(self, id: int) -> bool:

@@ -1,13 +1,11 @@
 from app.domain.entities.drawing import Drawing
+from app.domain.entities.registration import Registration
 from app.infrastructure.adapters.repositories.protocols import (
     ReadOnlyRepository,
     WriteableRepository,
 )
 from app.service_layer.dtos.drawing import DrawingDtoCreate, DrawingDtoUpdate
-from app.service_layer.dtos.registration import (
-    RegistrationDtoCreate,
-    RegistrationDtoOut,
-)
+from app.service_layer.dtos.registration import RegistrationDtoCreate
 
 
 class DrawingRepository(
@@ -16,7 +14,5 @@ class DrawingRepository(
     ...
 
 
-class RegistrationRepository(
-    ReadOnlyRepository[RegistrationDtoOut, RegistrationDtoCreate]
-):
+class RegistrationRepository(ReadOnlyRepository[Registration, RegistrationDtoCreate]):
     ...
