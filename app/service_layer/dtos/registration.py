@@ -10,6 +10,6 @@ class RegistrationDtoOut(AbstractDtoOut):
     created_at: datetime
 
 
-class RegistrationCreate(AbstractDtoCreate):
+class RegistrationDtoCreate(AbstractDtoCreate):
     drawing_id: int
     created_at: datetime

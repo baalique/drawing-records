@@ -1,6 +1,9 @@
 from factory import Factory, Faker, SubFactory
 
-from app.service_layer.dtos.registration import RegistrationCreate, RegistrationDtoOut
+from app.service_layer.dtos.registration import (
+    RegistrationDtoCreate,
+    RegistrationDtoOut,
+)
 from tests.factories.entities.drawing import FactoryDrawing
 
 
@@ -18,4 +21,4 @@ class FactoryRegistrationCreate(Factory):
     created_at = Faker("date_time_this_decade")
 
     class Meta:
-        model = RegistrationCreate
+        model = RegistrationDtoCreate

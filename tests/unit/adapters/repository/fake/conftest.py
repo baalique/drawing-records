@@ -2,13 +2,11 @@ from typing import Callable
 
 import pytest
 
-from app.db import get_db
-from app.infrastructure.adapters.repositories.fake import FakeSession
-from app.infrastructure.adapters.repositories.fake.drawing import FakeDrawingRepository
-from app.infrastructure.adapters.repositories.fake.registration import (
-    FakeRegistrationRepository,
-)
-from app.service_layer.dtos.registration import RegistrationCreate
+from app.service_layer.dtos.registration import RegistrationDtoCreate
+from tests.fake.db import get_db
+from tests.fake.repositories import FakeSession
+from tests.fake.repositories.drawing import FakeDrawingRepository
+from tests.fake.repositories.registration import FakeRegistrationRepository
 
 
 @pytest.fixture(name="fake_session")
@@ -69,10 +67,10 @@ def registration_repository_fixture(
 @pytest.fixture(name="create_registration_dto_from_repository")
 def create_registration_dto_from_repository_fixture(
     factory_registration_create,
-) -> Callable[[FakeRegistrationRepository], RegistrationCreate]:
+) -> Callable[[FakeRegistrationRepository], RegistrationDtoCreate]:
     def get_dto(registration_repository):
         drawing_id = registration_repository.session.data["Drawing"][-1].id
-        return RegistrationCreate(
+        return RegistrationDtoCreate(
             **factory_registration_create().dict() | {"drawing_id": drawing_id}
         )
 
@@ -82,10 +80,10 @@ def create_registration_dto_from_repository_fixture(
 @pytest.fixture(name="create_many_registrations_dtos_from_repository")
 def create_many_registration_dtos_from_repository_fixture(
     factory_registration_create,
-) -> Callable[[FakeRegistrationRepository], RegistrationCreate]:
+) -> Callable[[FakeRegistrationRepository], RegistrationDtoCreate]:
     def get_dtos(registration_repository):
         drawing_id = registration_repository.session.data["Drawing"][-1].id
-        return RegistrationCreate(
+        return RegistrationDtoCreate(
             **factory_registration_create().dict() | {"drawing_id": drawing_id}
         )
 
