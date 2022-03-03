@@ -1,4 +1,4 @@
-from typing import List
+from typing import Any, Dict, List, Optional
 
 from fastapi import Depends
 from sqlalchemy import delete, select, update
@@ -21,31 +21,37 @@ class SQLAlchemyDrawingRepository(DrawingRepository):
             await self.session.commit()
             return drawing
 
-    async def get(self, id: int) -> Drawing:
+    async def get(self, id: int) -> Optional[Drawing]:
         async with self.session:
             result = await self.session.execute(select(Drawing).where(Drawing.id == id))
             drawing = result.scalar()
             return drawing
 
     async def list(self) -> List[Drawing]:
-        result = await self.session.execute(select(Drawing).order_by(Drawing.id))
-        return result.scalars()
+        async with self.session:
+            result = await self.session.execute(select(Drawing).order_by(Drawing.id))
+            return result.scalars().all()
 
-    async def update(self, id: int, **kwargs) -> Drawing:
-        _res = await self.session.execute(
-            update(Drawing)
-            .where(Drawing.id == id)
-            .values(**kwargs)
-            .returning(Drawing.id)
-        )
+    async def update(self, id: int, update_dict: Dict[str, Any]) -> Optional[Drawing]:
+        async with self.session:
+            _res = await self.session.execute(
+                update(Drawing)
+                .where(Drawing.id == id)
+                .values(**update_dict)
+                .returning(Drawing.id)
+            )
 
-        result_id = _res.scalar()
-        await self.session.commit()
+            result_id = _res.scalar()
+            await self.session.commit()
 
-        result = await self.get(result_id)
-        return result
+            if result_id:
+                result = await self.get(result_id)
+                return result
+            else:
+                return None
 
     async def delete(self, id: int) -> bool:
-        result = await self.session.execute(delete(Drawing).where(Drawing.id == id))
-        await self.session.commit()
-        return bool(result)
+        async with self.session:
+            result = await self.session.execute(delete(Drawing).where(Drawing.id == id))
+            await self.session.commit()
+            return bool(result)
