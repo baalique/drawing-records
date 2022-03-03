@@ -1,14 +1,11 @@
-from typing import Generic, Iterable, Optional, TypeVar
+from typing import Any, Dict, Generic, Iterable, Optional, TypeVar
 
 from app.domain.entities import AbstractEntity
-from app.service_layer.dtos import AbstractDtoCreate, AbstractDtoUpdate
 
 E = TypeVar("E", bound=AbstractEntity)
-EC = TypeVar("EC", bound=AbstractDtoCreate)
-EU = TypeVar("EU", bound=AbstractDtoUpdate)
 
 
-class Repository(Generic[E, EC]):
+class Repository(Generic[E]):
     async def add(self, entity: E) -> E:
         ...
 
@@ -22,13 +19,13 @@ class Repository(Generic[E, EC]):
         ...
 
 
-class WriteableRepository(Repository, Generic[E, EC, EU]):
-    async def update(self, entity: EU, id: int) -> E:
+class WriteableRepository(Repository, Generic[E]):
+    async def update(self, id: int, update_dict: Dict[str, Any]) -> Optional[E]:
         ...
 
     async def delete(self, id: int) -> bool:
         ...
 
 
-class ReadOnlyRepository(Repository, Generic[E, EC]):
+class ReadOnlyRepository(Repository, Generic[E]):
     ...

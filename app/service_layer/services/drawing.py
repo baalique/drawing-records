@@ -47,7 +47,7 @@ async def get_all_drawings(repo: DrawingRepository) -> List[DrawingDtoOut]:
 
 async def update_drawing(
     id: int, drawing_update: DrawingDtoUpdate, repo: DrawingRepository
-) -> DrawingDtoOut:
+) -> Optional[DrawingDtoOut]:
     exists = await id_exists(id, repo)
     if not exists:
         raise NotFoundError(f"Drawing with id {drawing_update.parent_id} not found")
@@ -58,8 +58,9 @@ async def update_drawing(
     if drawing_update.parent_id is not None and not exists:
         raise NotFoundError(f"Drawing with id {drawing_update.parent_id} not found")
 
-    drawing = await repo.update(drawing_update, id)
-    return DrawingDtoOut.from_entity(drawing)
+    drawing = await repo.update(id, update_dict=drawing_update.dict())
+
+    return DrawingDtoOut.from_entity(drawing) if drawing else None
 
 
 async def delete_drawing(id: int, repo: DrawingRepository) -> bool:

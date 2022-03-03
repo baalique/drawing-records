@@ -9,7 +9,6 @@ from app.infrastructure.adapters.repositories.protocols.entities import (
     DrawingRepository,
 )
 from app.infrastructure.db.db import get_db
-from app.service_layer.dtos.drawing import DrawingDtoUpdate
 
 
 class SQLAlchemyDrawingRepository(DrawingRepository):
@@ -32,15 +31,11 @@ class SQLAlchemyDrawingRepository(DrawingRepository):
         result = await self.session.execute(select(Drawing).order_by(Drawing.id))
         return result.scalars()
 
-    async def update(self, drawing_update: DrawingDtoUpdate, id: int) -> Drawing:
-        dict_to_update = {
-            k: v for k, v in drawing_update.dict().items() if v is not None
-        }
-
+    async def update(self, id: int, **kwargs) -> Drawing:
         _res = await self.session.execute(
             update(Drawing)
             .where(Drawing.id == id)
-            .values(**dict_to_update)
+            .values(**kwargs)
             .returning(Drawing.id)
         )
 

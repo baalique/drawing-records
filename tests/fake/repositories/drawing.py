@@ -1,14 +1,13 @@
 from __future__ import annotations
 
 from functools import partial
-from typing import List, Optional
+from typing import Any, Dict, List, Optional
 
 from app.domain.entities.drawing import Drawing
 from app.infrastructure.adapters.repositories import is_id_equals
 from app.infrastructure.adapters.repositories.protocols.entities import (
     DrawingRepository,
 )
-from app.service_layer.dtos.drawing import DrawingDtoUpdate
 from tests.fake.repositories import FakeSession
 
 
@@ -34,13 +33,9 @@ class FakeDrawingRepository(DrawingRepository):
     async def list(self) -> List[Drawing]:
         return await self.session.list("Drawing")
 
-    async def update(
-        self, drawing_update: DrawingDtoUpdate, id: int
-    ) -> Optional[Drawing]:
+    async def update(self, id: int, update_dict: Dict[str, Any]) -> Optional[Drawing]:
         update_dict = {
-            k: v
-            for k, v in drawing_update.dict().items()
-            if v is not None or k == "parent_id"
+            k: v for k, v in update_dict.items() if v is not None or k == "parent_id"
         }
 
         updated = await self.session.update(

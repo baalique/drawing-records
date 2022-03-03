@@ -74,7 +74,7 @@ async def update_drawing(
     id: int,
     drawing: DrawingDtoUpdate,
     repo: DrawingRepository = Depends(drawing_repo),
-) -> DrawingDtoOut:
+) -> Optional[DrawingDtoOut]:
     updated_drawing = await drawing_services.update_drawing(id, drawing, repo)
     return updated_drawing
 
