@@ -24,6 +24,12 @@ class Settings(BaseSettings):
     DB_PASSWORD: str = Field(env="DB_PASSWORD")
     DB_NAME: str = Field(env="DB_NAME")
 
+    TEST_DB_URI: str = Field(env="TEST_DB_URI")
+    TEST_DB_PORT: int = Field(env="TEST_DB_PORT")
+    TEST_DB_USERNAME: str = Field(env="TEST_DB_USERNAME")
+    TEST_DB_PASSWORD: str = Field(env="TEST_DB_PASSWORD")
+    TEST_DB_NAME: str = Field(env="TEST_DB_NAME")
+
     @property
     def host(self) -> str:
         return f"http://{self.HOST_URL}:{self.HOST_PORT}"
@@ -33,6 +39,13 @@ class Settings(BaseSettings):
         return (
             f"postgresql+asyncpg://{self.DB_USERNAME}:{self.DB_PASSWORD}"
             f"@{self.DB_URI}:{self.DB_PORT}/{self.DB_NAME}"
+        )
+
+    @property
+    def test_dsn(self) -> str:
+        return (
+            f"postgresql+asyncpg://{self.TEST_DB_USERNAME}:{self.TEST_DB_PASSWORD}"
+            f"@{self.TEST_DB_URI}:{self.TEST_DB_PORT}/{self.TEST_DB_NAME}"
         )
 
     class Config:
