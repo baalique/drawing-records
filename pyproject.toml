@@ -30,9 +30,8 @@ isort = "^5.10.1"
 flake8-isort = "^4.1.1"
 flake8-annotations = "^2.7.0"
 mypy = "^0.931"
-SQLAlchemy = {version = "1.4.31", extras = ["mypy"]}
 asyncpg = "^0.25.0"
-sqlalchemy-stubs = "^0.4"
+SQLAlchemy = {extras = ["mypy"], version = "^1.4.31"}
 
 [tool.poetry.dev-dependencies]
 
@@ -97,4 +96,4 @@ flake8-bugbear = [
 ]
 
 [tool.mypy]
-plugins = ["sqlmypy"]
+plugins = ["sqlalchemy.ext.mypy.plugin"]
