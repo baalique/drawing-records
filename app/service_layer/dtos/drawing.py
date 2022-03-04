@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-from pathlib import Path
 from typing import Optional
 
 from pydantic import Field
@@ -16,7 +15,7 @@ class DrawingDtoOut(AbstractDtoOut):
     category: str
     project: str
     drawing_data: dict
-    path_to_file: Path
+    path_to_file: str
 
     @staticmethod
     def from_entity(drawing: Drawing) -> DrawingDtoOut:
@@ -38,7 +37,7 @@ class DrawingDtoCreate(AbstractDtoCreate):
     category: str
     project: str
     drawing_data: dict
-    path_to_file: Path
+    path_to_file: str
 
     def to_entity(self, parent: Optional[Drawing]) -> Drawing:
         return Drawing(
@@ -59,4 +58,4 @@ class DrawingDtoUpdate(AbstractDtoUpdate):
     category: Optional[str]
     project: Optional[str]
     drawing_data: Optional[dict]
-    path_to_file: Optional[Path]
+    path_to_file: Optional[str]
