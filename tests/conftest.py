@@ -32,7 +32,9 @@ def drawing_fixture(factory_drawing):
 
 @pytest.fixture(name="drawings")
 def drawings_fixture(factory_drawing, default_database_size):
-    return lambda amount=default_database_size: make_many(factory_drawing, amount)
+    return lambda amount=default_database_size: make_many(
+        factory_drawing, amount, primary_key_expression=lambda d: d.id
+    )
 
 
 @pytest.fixture(name="drawing_dto_out")
@@ -43,7 +45,7 @@ def drawing_dto_out_fixture(factory_drawing_dto_out):
 @pytest.fixture(name="drawings_dto_out")
 def drawings_dto_out_fixture(factory_drawing_dto_out, default_database_size):
     return lambda amount=default_database_size: make_many(
-        factory_drawing_dto_out, amount
+        factory_drawing_dto_out, amount, primary_key_expression=lambda d: d.id
     )
 
 
@@ -55,7 +57,7 @@ def drawing_dto_create_fixture(factory_drawing_dto_create):
 @pytest.fixture(name="drawings_dto_create")
 def drawings_dto_create_fixture(factory_drawing_dto_create, default_database_size):
     return lambda amount=default_database_size: make_many(
-        factory_drawing_dto_create, amount
+        factory_drawing_dto_create, amount, primary_key_expression=lambda d: d.id
     )
 
 

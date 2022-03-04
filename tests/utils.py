@@ -1,14 +1,30 @@
 import asyncio
 from contextlib import contextmanager
-from typing import Any, List
+from typing import Any, Callable, List, Optional
 
 from factory.base import FactoryMetaClass
 
 from app.application import Application
 
 
-def make_many(factory: FactoryMetaClass, amount) -> List[Any]:
-    return [factory() for _ in range(amount)]
+def make_many(
+    factory: FactoryMetaClass,
+    amount: int,
+    primary_key_expression: Optional[Callable[[FactoryMetaClass], Any]] = None,
+) -> List[Any]:
+    if not primary_key_expression:
+        return [factory() for _ in range(amount)]
+
+    objs = []
+    _pks = {}
+    c = 0
+    while True:
+        if c >= amount:
+            return objs
+        obj = factory()
+        if primary_key_expression(obj) not in _pks:
+            objs.append(obj)
+            c += 1
 
 
 @contextmanager
