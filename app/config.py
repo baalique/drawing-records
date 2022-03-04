@@ -61,7 +61,3 @@ def _get_initial_app_settings() -> Callable[[], Settings]:
 
 
 get_initial_app_settings = _get_initial_app_settings()
-
-
-def get_current_app_settings() -> Settings:
-    return Settings()

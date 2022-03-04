@@ -1,6 +1,6 @@
 import uvicorn
 
-from app.config import get_current_app_settings, get_initial_app_settings
+from app.config import get_initial_app_settings
 from app.initialization import init_app
 
 app_settings = get_initial_app_settings()
@@ -10,7 +10,7 @@ fastapi_app = app.app
 
 
 def start_app() -> None:
-    settings = get_current_app_settings()
+    settings = app_settings
     uvicorn.run(
         "main:fastapi_app",
         host=settings.HOST_URL,
