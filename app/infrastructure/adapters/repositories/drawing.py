@@ -52,6 +52,9 @@ class SQLAlchemyDrawingRepository(DrawingRepository):
 
     async def delete(self, id: int) -> bool:
         async with self.session:
-            result = await self.session.execute(delete(Drawing).where(Drawing.id == id))
+            _res = await self.session.execute(
+                delete(Drawing).where(Drawing.id == id).returning(Drawing.id)
+            )
+            result = _res.scalar()
             await self.session.commit()
             return bool(result)
