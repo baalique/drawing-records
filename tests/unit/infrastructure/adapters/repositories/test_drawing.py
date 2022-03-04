@@ -76,7 +76,7 @@ async def test_update_drawing(drawing_repository, drawing_dto_update):
 @pytest.mark.unit
 @pytest.mark.asyncio
 async def test_update_drawing_fails_no_such_id(
-        drawing_repository_empty, drawing_dto_update
+    drawing_repository_empty, drawing_dto_update
 ):
     result = await drawing_repository_empty.update(1, drawing_dto_update.dict())
 
@@ -102,7 +102,6 @@ async def test_delete_drawing(drawing_repository):
 @pytest.mark.unit
 @pytest.mark.asyncio
 async def test_delete_drawing_fails_no_such_id(drawing_repository_empty):
-    res = await drawing_repository_empty.list()
     result = await drawing_repository_empty.delete(1)
 
     assert result is False

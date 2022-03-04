@@ -61,21 +61,6 @@ async def test_create_drawing_fails_parent_not_exists(
 
 @pytest.mark.unit
 @pytest.mark.asyncio
-async def test_create_drawing_fails_cannot_add(
-    drawing_dto_create, fake_drawing_repository
-):
-    async def fake_add(*args, **kwargs):
-        return None
-
-    fake_drawing_repository.add = fake_add
-
-    result = await create_drawing(drawing_dto_create, fake_drawing_repository)
-
-    assert result is None
-
-
-@pytest.mark.unit
-@pytest.mark.asyncio
 async def test_get_drawing_by_id_success(fake_drawing_repository):
     id_ = fake_drawing_repository.data[0].id
 

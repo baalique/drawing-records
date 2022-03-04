@@ -33,10 +33,6 @@ class TestDrawingDtoCreate:
             with pytest.raises(ValidationError):
                 DrawingDtoCreate(**copy_drawing_dict)
 
-    def test_optional_attributes_are_not_required(self, valid_drawing_dto_create_dict):
-        valid_drawing_dto_create_dict.pop("parent_id")
-        assert DrawingDtoCreate(**valid_drawing_dto_create_dict)
-
 
 @pytest.mark.unit
 class TestDrawingDtoUpdate:
@@ -83,10 +79,6 @@ class TestDrawingDtoOut:
             copy_drawing_dict.pop(attr)
             with pytest.raises(ValidationError):
                 DrawingDtoOut(**copy_drawing_dict)
-
-    def test_optional_attributes_are_not_required(self, valid_drawing_dto_out_dict):
-        valid_drawing_dto_out_dict.pop("parent_id")
-        assert DrawingDtoOut(**valid_drawing_dto_out_dict)
 
     def test_set_invalid_attributes(
         self, valid_drawing_dto_out_dict, invalid_drawing_dto_out_dict

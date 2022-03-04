@@ -28,7 +28,7 @@ def invalid_drawing_dto_out_dict_fixture() -> Dict[str, Any]:
         "category": [1],
         "project": [1],
         "drawing_data": 1,
-        "path_to_file": 1,
+        "path_to_file": [1],
     }
 
 
@@ -54,7 +54,7 @@ def invalid_drawing_dto_create_dict_fixture() -> Dict[str, Any]:
         "category": [1],
         "project": [1],
         "drawing_data": 1,
-        "path_to_file": 1,
+        "path_to_file": [1],
     }
 
 
@@ -79,7 +79,7 @@ def invalid_drawing_dto_update_dict_fixture() -> Dict[str, Any]:
         "category": [1],
         "project": [1],
         "drawing_data": 1,
-        "path_to_file": 1,
+        "path_to_file": [1],
     }
 
 
