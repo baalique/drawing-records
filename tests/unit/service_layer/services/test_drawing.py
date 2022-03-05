@@ -72,9 +72,8 @@ async def test_get_drawing_by_id_success(fake_drawing_repository):
 @pytest.mark.unit
 @pytest.mark.asyncio
 async def test_get_drawing_by_id_fails_not_found(fake_drawing_repository_empty):
-    result = await get_drawing_by_id(1, fake_drawing_repository_empty)
-
-    assert result is None
+    with pytest.raises(NotFoundError):
+        await get_drawing_by_id(1, fake_drawing_repository_empty)
 
 
 @pytest.mark.unit
@@ -95,14 +94,14 @@ async def test_update_drawing_success(drawing_dto_update, fake_drawing_repositor
 
     result = await update_drawing(id_, drawing, fake_drawing_repository)
 
-    assert result == DrawingDtoOut(**drawing_dto_update.dict())
+    assert result.dict().items() >= drawing.dict().items()
     assert result.parent_id is None
 
 
 @pytest.mark.unit
 @pytest.mark.asyncio
 async def test_update_drawing_one_row_success(fake_drawing_repository):
-    drawing = DrawingDtoUpdate(name="name")
+    drawing = DrawingDtoUpdate(name="name", parent_id=None)
     id_ = fake_drawing_repository.data[0].id
 
     result = await update_drawing(id_, drawing, fake_drawing_repository)

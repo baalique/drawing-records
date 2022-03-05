@@ -46,7 +46,6 @@ class TestDrawingDtoUpdate:
     def test_optional_attributes_are_not_required(self, valid_drawing_dto_update_dict):
         for attr in (
             "name",
-            "parent_id",
             "category",
             "project",
             "drawing_data",
