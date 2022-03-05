@@ -54,7 +54,7 @@ class DrawingDtoCreate(AbstractDtoCreate):
 class DrawingDtoUpdate(AbstractDtoUpdate):
     id: Optional[int]
     name: Optional[str]
-    parent_id: Optional[int]
+    parent_id: Optional[int] = Field(...)
     category: Optional[str]
     project: Optional[str]
     drawing_data: Optional[dict]
