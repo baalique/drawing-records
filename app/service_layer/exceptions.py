@@ -1,6 +1,13 @@
-class AlreadyExistsError(Exception):
+class ServiceLayerException(Exception):
     pass
 
 
-class NotFoundError(Exception):
+class AlreadyExistsError(ServiceLayerException):
     pass
+
+
+class NotFoundError(ServiceLayerException):
+    pass
+
+
+ex = NotFoundError()
