@@ -1,19 +1,15 @@
-from typing import AsyncGenerator
+from typing import AsyncGenerator, Callable
 
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
 
-from app.config import get_initial_app_settings
-from app.infrastructure.adapters.orm import start_mappers
 
+def get_session_factory(
+    dsn: str, echo: bool
+) -> Callable[[], AsyncGenerator[AsyncSession, None]]:
+    engine = create_async_engine(dsn, echo=echo)
 
-def init_db() -> sessionmaker:
-    settings = get_initial_app_settings()
-
-    engine = create_async_engine(settings.dsn, pool_pre_ping=True)
-    start_mappers()
-
-    return sessionmaker(
+    session = sessionmaker(
         bind=engine,
         class_=AsyncSession,
         autocommit=False,
@@ -21,10 +17,11 @@ def init_db() -> sessionmaker:
         expire_on_commit=False,
     )
 
+    async def get_db_session() -> AsyncGenerator[AsyncSession, None]:
+        db = session()
+        try:
+            yield db
+        finally:
+            db.close()
 
-session_factory = init_db()
-
-
-async def get_db() -> AsyncGenerator:
-    async with session_factory() as session:
-        yield session
+    return get_db_session

@@ -6,13 +6,11 @@ from app.initialization import init_app
 app_settings = get_initial_app_settings()
 app = init_app(app_settings)
 
-fastapi_app = app.app
-
 
 def start_app() -> None:
     settings = app_settings
     uvicorn.run(
-        "main:fastapi_app",
+        "main:app",
         host=settings.HOST_URL,
         port=settings.HOST_PORT,
         reload=settings.RELOAD,

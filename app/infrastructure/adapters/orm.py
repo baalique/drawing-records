@@ -1,6 +1,8 @@
-from sqlalchemy import Column, ForeignKey, Integer, MetaData, Table, Text
+from __future__ import annotations
+
+from sqlalchemy import Column, ForeignKey, Integer, MetaData, Table, Text, exc
 from sqlalchemy.dialects.postgresql import JSONB
-from sqlalchemy.orm import registry  # type: ignore
+from sqlalchemy.orm import registry
 
 from app.domain.entities.drawing import Drawing
 
@@ -21,16 +23,19 @@ drawing_table = Table(
 
 
 def start_mappers() -> None:
-    mapper_registry.map_imperatively(
-        Drawing,
-        drawing_table,
-        properties={
-            "id": drawing_table.c.id,
-            "name": drawing_table.c.name,
-            "parent_id": drawing_table.c.parent_id,
-            "category": drawing_table.c.category,
-            "project": drawing_table.c.project,
-            "drawing_data": drawing_table.c.drawing_data,
-            "path_to_file": drawing_table.c.path_to_file,
-        },
-    )
+    try:
+        mapper_registry.map_imperatively(
+            Drawing,
+            drawing_table,
+            properties={
+                "id": drawing_table.c.id,
+                "name": drawing_table.c.name,
+                "parent_id": drawing_table.c.parent_id,
+                "category": drawing_table.c.category,
+                "project": drawing_table.c.project,
+                "drawing_data": drawing_table.c.drawing_data,
+                "path_to_file": drawing_table.c.path_to_file,
+            },
+        )
+    except exc.ArgumentError:
+        pass
