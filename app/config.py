@@ -23,12 +23,14 @@ class Settings(BaseSettings):
     DB_USERNAME: str = Field(env="DB_USERNAME")
     DB_PASSWORD: str = Field(env="DB_PASSWORD")
     DB_NAME: str = Field(env="DB_NAME")
+    DB_ECHO: bool = Field(env="DB_ECHO")
 
     TEST_DB_URI: str = Field(env="TEST_DB_URI")
     TEST_DB_PORT: int = Field(env="TEST_DB_PORT")
     TEST_DB_USERNAME: str = Field(env="TEST_DB_USERNAME")
     TEST_DB_PASSWORD: str = Field(env="TEST_DB_PASSWORD")
     TEST_DB_NAME: str = Field(env="TEST_DB_NAME")
+    TEST_DB_ECHO: bool = Field(env="TEST_DB_ECHO")
 
     @property
     def host(self) -> str:
