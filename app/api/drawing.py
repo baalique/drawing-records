@@ -3,10 +3,7 @@ from typing import Iterable, List, Optional
 from fastapi import APIRouter, Depends, Response, status
 
 from app.api.exceptions import map_exception
-from app.infrastructure.adapters.repositories.drawing import SQLAlchemyDrawingRepository
-from app.infrastructure.adapters.repositories.protocols.entities import (
-    DrawingRepository,
-)
+from app.infrastructure.protocols import UnitOfWork
 from app.service_layer.dtos.drawing import (
     DrawingDtoCreate,
     DrawingDtoOut,
@@ -30,10 +27,10 @@ router = APIRouter(prefix="/drawing", tags=["drawing"])
 )
 async def create_drawing(
     drawing: DrawingDtoCreate,
-    repo: DrawingRepository = Depends(SQLAlchemyDrawingRepository),
+    uow: UnitOfWork = Depends(),
 ) -> DrawingDtoOut:
     try:
-        return await drawing_services.create_drawing(drawing, repo)
+        return await drawing_services.create_drawing(drawing, uow)
     except (AlreadyExistsError, NotFoundError) as ex:
         raise map_exception(ex)
 
@@ -45,9 +42,9 @@ async def create_drawing(
     responses={200: {"description": "Items found"}},
 )
 async def get_all_drawings(
-    repo: DrawingRepository = Depends(SQLAlchemyDrawingRepository),
+    uow: UnitOfWork = Depends(),
 ) -> Iterable[DrawingDtoOut]:
-    return await drawing_services.get_all_drawings(repo)
+    return await drawing_services.get_all_drawings(uow)
 
 
 @router.get(
@@ -59,11 +56,9 @@ async def get_all_drawings(
         404: {"description": "Item not found"},
     },
 )
-async def get_drawing(
-    id: int, repo: DrawingRepository = Depends(SQLAlchemyDrawingRepository)
-) -> DrawingDtoOut:
+async def get_drawing(id: int, uow: UnitOfWork = Depends()) -> DrawingDtoOut:
     try:
-        return await drawing_services.get_drawing_by_id(id, repo)
+        return await drawing_services.get_drawing_by_id(id, uow)
     except NotFoundError as ex:
         raise map_exception(ex)
 
@@ -81,10 +76,10 @@ async def get_drawing(
 async def update_drawing(
     id: int,
     drawing: DrawingDtoUpdate,
-    repo: DrawingRepository = Depends(SQLAlchemyDrawingRepository),
+    uow: UnitOfWork = Depends(),
 ) -> Optional[DrawingDtoOut]:
     try:
-        return await drawing_services.update_drawing(id, drawing, repo)
+        return await drawing_services.update_drawing(id, drawing, uow)
     except (AlreadyExistsError, NotFoundError) as ex:
         raise map_exception(ex)
 
@@ -97,11 +92,9 @@ async def update_drawing(
         404: {"description": "Item not found"},
     },
 )
-async def delete_drawing(
-    id: int, repo: DrawingRepository = Depends(SQLAlchemyDrawingRepository)
-) -> Response:
+async def delete_drawing(id: int, uow: UnitOfWork = Depends()) -> Response:
     try:
-        await drawing_services.delete_drawing(id, repo)
+        await drawing_services.delete_drawing(id, uow)
     except (AlreadyExistsError, NotFoundError) as ex:
         raise map_exception(ex)
     return Response(status_code=status.HTTP_204_NO_CONTENT)
